@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="liner_layout_328">328dp</dimen>
+    <dimen name="liner_layout_36">36dp</dimen>
+    <dimen name="liner_layout_709">709dp</dimen>
+    <dimen name="liner_layout_8">8dp</dimen>
+    <dimen name="liner_layout_16">16dp</dimen>
+
+    <dimen name="button_corner_radius_8">8dp</dimen>
+    <dimen name="button_layout_weight_1">1</dimen>
+    <dimen name="button_layout_margin_end">4</dimen>
+
+</resources>
