@@ -11,8 +11,8 @@
 
   <LinearLayout
       android:id="@+id/linearLayout"
-      android:layout_width="@dimen/liner_layout_328"
-      android:layout_height="@dimen/liner_layout_36"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/liner_layout_709"
       android:layout_marginBottom="@dimen/liner_layout_8"
       android:layout_marginStart="@dimen/liner_layout_16"
@@ -22,10 +22,10 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent">
 
-    <android.widget.Button
-        android:id="@+id/button3"
+    <Button
+        android:id="@+id/category_button"
         style="@style/StyleNavButton"
-        android:layout_weight="@dimen/button_layout_weight_1"
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/button_layout_margin_end"
@@ -33,10 +33,10 @@
         android:text="@string/category_text"
         />
 
-    <android.widget.Button
-        android:id="@+id/button2"
+    <Button
+        android:id="@+id/favorites_button"
         style="@style/StyleNavButton"
-        android:layout_weight="@dimen/button_layout_weight_1"
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/favoriteButtonColor"
