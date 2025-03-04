@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="fragment_layout_16">16dp</dimen>
+    <dimen name="fragment_layout_8">8dp</dimen>
+
     <dimen name="liner_layout_709">709dp</dimen>
     <dimen name="liner_layout_8">8dp</dimen>
     <dimen name="liner_layout_16">16dp</dimen>
