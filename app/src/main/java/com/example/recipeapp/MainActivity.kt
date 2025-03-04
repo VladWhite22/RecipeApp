@@ -8,9 +8,10 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.recipeapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private var  _binding: ActivityMainBinding? = null
+    private var _binding: ActivityMainBinding? = null
     private val binding
-        get() = _binding ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
+        get() = _binding
+            ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
