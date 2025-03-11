@@ -50,7 +50,7 @@
 
   <androidx.fragment.app.FragmentContainerView
       android:id="@+id/mainContainer"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_marginStart="@dimen/fragment_layout_16"
       android:layout_marginEnd="@dimen/fragment_layout_16"
@@ -58,7 +58,8 @@
       app:layout_constraintBottom_toTopOf="@+id/linearLayout"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
+      app:layout_constraintTop_toTopOf="parent"
+      android:name="com.example.recipeapp.CategoriesListFragment">
 
   </androidx.fragment.app.FragmentContainerView>
 
