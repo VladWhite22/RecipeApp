@@ -9,5 +9,6 @@
 
     <dimen name="button_corner_radius_8">8dp</dimen>
     <dimen name="button_layout_margin_end">4dp</dimen>
+    <dimen name="button_width">0dp</dimen>
 
 </resources>
