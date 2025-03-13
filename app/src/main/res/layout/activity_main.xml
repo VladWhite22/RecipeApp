@@ -13,10 +13,8 @@
       android:id="@+id/linearLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/liner_layout_709"
       android:layout_marginBottom="@dimen/liner_layout_8"
-      android:layout_marginStart="@dimen/liner_layout_16"
-      android:layout_marginEnd="@dimen/liner_layout_16"
+      android:layout_marginHorizontal="@dimen/liner_layout_16"
       android:orientation="horizontal"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +24,7 @@
         android:id="@+id/btmCategoryButton"
         style="@style/StyleNavButton"
         android:layout_weight="1"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/button_layout_margin_end"
         android:backgroundTint="@color/categoryButtonColor"
@@ -37,7 +35,7 @@
         android:id="@+id/btmFavoritesButton"
         style="@style/StyleNavButton"
         android:layout_weight="1"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/favoriteButtonColor"
         android:fontFamily="@font/montserrat_alternates_medium"
@@ -48,6 +46,19 @@
 
   </LinearLayout>
 
+  <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/mainContainer"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginStart="@dimen/fragment_layout_16"
+      android:layout_marginEnd="@dimen/fragment_layout_16"
+      android:layout_marginBottom="@dimen/fragment_layout_8"
+      app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      android:name="com.example.recipeapp.CategoriesListFragment">
 
+  </androidx.fragment.app.FragmentContainerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
