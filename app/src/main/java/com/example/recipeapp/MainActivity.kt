@@ -6,24 +6,41 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.recipeapp.databinding.ActivityMainBinding
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import com.example.recipeapp.databinding.FragmentFavoritesBinding
 
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-    private var _binding: ActivityMainBinding? = null
-    private val binding
-        get() = _binding
-            ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        _binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            add<CategoriesListFragment>(R.id.mainContainer)
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<CategoriesListFragment>(R.id.mainContainer)
+            }
         }
+
+        binding.btmCategoryButton.setOnClickListener {
+            supportFragmentManager.commit {
+                replace<CategoriesListFragment>(R.id.mainContainer)
+                setReorderingAllowed(true)
+                addToBackStack("name")
+            }
+        }
+        binding.btmFavoritesButton.setOnClickListener {
+            supportFragmentManager.commit {
+                replace<FavoritesFragment>(R.id.mainContainer)
+                setReorderingAllowed(true)
+                addToBackStack("name")
+            }
+        }
+
     }
 }
