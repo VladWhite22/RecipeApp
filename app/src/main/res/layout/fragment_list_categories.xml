@@ -7,7 +7,7 @@
     android:backgroundTint="@color/backgroundСolor">
 
     <TextView
-        android:id="@+id/tvFragmentFavorites"
+        android:id="@+id/tvFragmentCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Катеории"
