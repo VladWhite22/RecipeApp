@@ -7,15 +7,13 @@ import com.example.recipeapp.databinding.ActivityMainBinding
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.recipeapp.databinding.FragmentFavoritesBinding
 
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -26,7 +24,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 add<CategoriesListFragment>(R.id.mainContainer)
             }
         }
-
         binding.btmCategoryButton.setOnClickListener {
             supportFragmentManager.commit {
                 replace<CategoriesListFragment>(R.id.mainContainer)
@@ -41,6 +38,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 addToBackStack("name")
             }
         }
-
     }
 }
