@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_layout_8"
     android:clickable="true"
@@ -16,14 +16,15 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/ivCategorys"
-            android:layout_width="156dp"
-            android:layout_height="130dp"
+            android:id="@+id/ivCategory"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_image_height_130"
             android:scaleType="centerCrop"
             android:src="@drawable/bcg_recipes_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints">
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/category_image">
 
         </ImageView>
 
@@ -36,7 +37,7 @@
             android:layout_marginTop="@dimen/card_description_layout_8"
             android:text="@string/burger_item_category"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCategorys">
+            app:layout_constraintTop_toBottomOf="@+id/ivCategory">
 
         </TextView>
 
@@ -45,6 +46,7 @@
             style="@style/StyleCategoryDescription12"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/card_description_layout_8"
             android:layout_marginTop="@dimen/card_description_layout_8"
             android:layout_marginBottom="@dimen/card_description_layout_8"
             android:text="@string/item_category_description"

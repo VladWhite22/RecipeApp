@@ -6,5 +6,6 @@
     
     <string name="burger_item_category">"Бургеры"</string>
     <string name="item_category_description">Рецепты всех\nпопулярных видов\nбургеров</string>
-    <string name="layout_category">Катеории</string>
+    <string name="layout_category">Категории</string>
+    <string name="category_image">Category image</string>
 </resources>
