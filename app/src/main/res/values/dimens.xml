@@ -2,13 +2,20 @@
 <resources>
     <dimen name="fragment_layout_16">16dp</dimen>
     <dimen name="fragment_layout_8">8dp</dimen>
-
     <dimen name="liner_layout_709">709dp</dimen>
     <dimen name="liner_layout_8">8dp</dimen>
     <dimen name="liner_layout_16">16dp</dimen>
 
     <dimen name="button_corner_radius_8">8dp</dimen>
-    <dimen name="button_layout_margin_end">4dp</dimen>
+    <dimen name="button_layout_margin_end_4">4dp</dimen>
     <dimen name="button_width">0dp</dimen>
+
+    <dimen name="category_text_view_164">164dp</dimen>
+    <dimen name="layout_category_height_224">224dp</dimen>
+
+    <dimen name="card_corner_radius_8">8dp</dimen>
+    <dimen name="card_layout_8">8dp</dimen>
+    <dimen name="card_description_layout_8">8dp</dimen>
+    <dimen name="card_image_height_130">130dp</dimen>
 
 </resources>

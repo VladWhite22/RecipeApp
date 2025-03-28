@@ -1,6 +1,6 @@
 package com.example.recipeapp
 
-class Category(
+data class Category(
     val id: Int,
     val title: String,
     val description: String,

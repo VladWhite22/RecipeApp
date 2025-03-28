@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/button_layout_margin_end"
+        android:layout_marginEnd="@dimen/button_layout_margin_end_4"
         android:backgroundTint="@color/categoryButtonColor"
         android:text="@string/category_text"
         />
@@ -49,16 +49,11 @@
   <androidx.fragment.app.FragmentContainerView
       android:id="@+id/mainContainer"
       android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_marginStart="@dimen/fragment_layout_16"
-      android:layout_marginEnd="@dimen/fragment_layout_16"
-      android:layout_marginBottom="@dimen/fragment_layout_8"
-      app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+      android:layout_height="wrap_content"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      android:name="com.example.recipeapp.CategoriesListFragment">
+      app:layout_constraintTop_toTopOf="parent">
 
   </androidx.fragment.app.FragmentContainerView>
-
+  
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,6 @@
 package com.example.recipeapp
 
-class Recipe(
+data class Recipe(
     val id: Int,
     val title: String,
     val ingredients: List<Ingredient>,
