@@ -30,6 +30,8 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         super.onDestroyView()
         _binding = null
     }
-
-
+    private fun initRecycler() {
+        val adapter = CategoriesListAdapter(STUB.getCategories())
+        binding.rvCategories.adapter = adapter
+    }
 }
