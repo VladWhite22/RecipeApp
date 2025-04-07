@@ -8,7 +8,6 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 
-
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 

@@ -2,25 +2,28 @@ package com.example.recipeapp
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recipeapp.databinding.ItemCategoryBinding
 
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
-    class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-        val ivCategory: ImageView = view.findViewById(R.id.ivCategory)
-        val tvCategoryName: TextView = view.findViewById(R.id.tvCategoryName)
-        val tvCategoryDescription: TextView = view.findViewById(R.id.tvCategoryDescription)
+    interface OnItemClickListener {
+        fun onItemClick()
     }
 
+    private var itemClickListener: OnItemClickListener? = null
 
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
+    class ViewHolder(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root)
+    
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
-        val view = inflater.inflate(R.layout.item_category,viewGroup,false)
+        val view = ItemCategoryBinding.inflate(inflater, viewGroup, false)
         return ViewHolder(view)
     }
 
@@ -31,12 +34,16 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
                 viewHolder.itemView.context.assets.open(category.imageUrl),
                 null
             )
-            viewHolder.ivCategory.setImageDrawable(drawable)
+            viewHolder.binding.ivCategory.setImageDrawable(drawable)
         } catch (e:Exception){
-            null
+            e.printStackTrace()
         }
-        viewHolder.tvCategoryName.text = category.title
-        viewHolder.tvCategoryDescription.text = category.description
+        viewHolder.binding.tvCategoryName.text = category.title
+        viewHolder.binding.tvCategoryDescription.text = category.description
+
+        viewHolder.itemView.setOnClickListener {
+            itemClickListener?.onItemClick()
+        }
     }
 
     override fun getItemCount() = dataSet.size

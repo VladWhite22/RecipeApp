@@ -4,6 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipeapp.databinding.FragmentListCategoriesBinding
 
 class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
@@ -30,8 +34,19 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         super.onDestroyView()
         _binding = null
     }
+    fun openRecipesByCategoryId(){fragmentManager?.commit {
+        setReorderingAllowed(true)
+        replace<RecipesListFragment>(R.id.mainContainer)
+    }}
+
     private fun initRecycler() {
         val adapter = CategoriesListAdapter(STUB.getCategories())
+        binding.rvCategories.layoutManager = GridLayoutManager(context,2,GridLayoutManager.VERTICAL,false)
         binding.rvCategories.adapter = adapter
+        adapter.setOnItemClickListener (object : CategoriesListAdapter.OnItemClickListener {
+            override fun onItemClick() {
+                openRecipesByCategoryId()
+            }
+        })
     }
 }
