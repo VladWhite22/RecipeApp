@@ -34,9 +34,10 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         super.onDestroyView()
         _binding = null
     }
-    fun openRecipesByCategoryId(){fragmentManager?.commit {
+    fun openRecipesByCategoryId(){parentFragmentManager.commit {
         setReorderingAllowed(true)
         replace<RecipesListFragment>(R.id.mainContainer)
+        addToBackStack(null)
     }}
 
     private fun initRecycler() {
