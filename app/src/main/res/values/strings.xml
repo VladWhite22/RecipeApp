@@ -8,4 +8,5 @@
     <string name="item_category_description">Рецепты всех\nпопулярных видов\nбургеров</string>
     <string name="layout_category">Категории</string>
     <string name="category_image">Category image</string>
+    <string name="category_image_content_description">%1$s сategory image</string>
 </resources>

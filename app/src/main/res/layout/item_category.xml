@@ -9,7 +9,8 @@
     android:layout_margin="@dimen/card_layout_8"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="@dimen/card_corner_radius_8">
+    app:cardCornerRadius="@dimen/card_corner_radius_8"
+    android:contentDescription="@string/category_image_content_description">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
