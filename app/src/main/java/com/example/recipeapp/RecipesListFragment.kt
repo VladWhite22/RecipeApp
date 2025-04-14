@@ -28,10 +28,11 @@ class RecipesListFragment:Fragment(R.layout.fragment_recipes_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        argCategoryId = requireArguments().getInt("ARG_CATEGORY_ID")
-        argCategoryName = requireArguments().getString("ARG_CATEGORY_IMAGE_URL")
-        argCategoryImageUrl = requireArguments().getString("ARG_CATEGORY_IMAGE_URL")
+        arguments?.let {
+            requireArguments().getInt(CategoriesListFragment.ARG_CATEGORY_ID)
+            requireArguments().getString(CategoriesListFragment.ARG_CATEGORY_NAME)
+            requireArguments().getString(CategoriesListFragment.ARG_CATEGORY_IMAGE_URL)
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
