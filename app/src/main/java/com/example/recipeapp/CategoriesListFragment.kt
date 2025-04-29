@@ -35,22 +35,36 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         _binding = null
     }
 
+    companion object {
+        const val ARG_CATEGORY_ID = "arg_category_id"
+        const val ARG_CATEGORY_NAME = "arg_category_name"
+        const val ARG_CATEGORY_IMAGE_URL = "arg_category_image_url"
+    }
+
+    private val categories = STUB.getCategories()
+
     fun openRecipesByCategoryId(categoryId:Int) {
-        val category: Category = STUB.getCategories()[categoryId]
-        val categoryName = category.title
-            val categoryImageUrl = category.imageUrl
-        val bundle = bundleOf( "ARG_CATEGORY_ID" to categoryId,
-            "ARG_CATEGORY_NAME" to categoryName,
-            "ARG_CATEGORY_IMAGE_URL" to categoryImageUrl)
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
-            addToBackStack(null)
-        }
+
+        val idCategory = categories.find { it.id == categoryId }
+            val categoryTitle = idCategory?.title
+            val categoryImageUrl = idCategory?.imageUrl
+
+            val bundle = bundleOf(
+                ARG_CATEGORY_ID to categoryId,
+                ARG_CATEGORY_NAME to categoryTitle,
+                ARG_CATEGORY_IMAGE_URL to categoryImageUrl
+            )
+
+            parentFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
+                addToBackStack(null)
+            }
+
     }
 
     private fun initRecycler() {
-        val adapter = CategoriesListAdapter(STUB.getCategories())
+        val adapter = CategoriesListAdapter(categories)
         binding.rvCategories.layoutManager = GridLayoutManager(context,2,GridLayoutManager.VERTICAL,false)
         binding.rvCategories.adapter = adapter
         adapter.setOnItemClickListener (object : CategoriesListAdapter.OnItemClickListener {

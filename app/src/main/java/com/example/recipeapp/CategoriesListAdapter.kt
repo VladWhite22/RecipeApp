@@ -22,6 +22,7 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
 
     class ViewHolder(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(category: Category) {
+
             binding.tvCategoryName.text = category.title
             binding.tvCategoryDescription.text = category.description
 

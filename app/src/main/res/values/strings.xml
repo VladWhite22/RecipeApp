@@ -9,4 +9,7 @@
     <string name="layout_category">Категории</string>
     <string name="category_image">Category image</string>
     <string name="category_image_content_description">%1$s сategory image</string>
+    <string name="burgers_recipes">Burger recipes</string>
+    <string name="image_rcipt_card">Image recipt card</string>
+    <string name="recycle_view">Recycle view</string>
 </resources>
