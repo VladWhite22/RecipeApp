@@ -12,4 +12,5 @@
     <string name="burgers_recipes">Burger recipes</string>
     <string name="image_rcipt_card">Image recipt card</string>
     <string name="recycle_view">Recycle view</string>
+    <string name="recipe_image_description"></string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.recipeapp
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,7 +21,8 @@ class RecipesListAdapter(val dataSet: List<Recipe>) :
         itemClickListener = listener
     }
 
-    class ViewHolder (val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("StringFormatInvalid")
         fun bind(recipe: Recipe) {
             binding.tvRecipeName.text = recipe.title
 
@@ -30,10 +32,10 @@ class RecipesListAdapter(val dataSet: List<Recipe>) :
                     null
                 )
                 binding.ivRecipe.setImageDrawable(drawable)
-//                binding.ivRecipe.contentDescription = String.format(
-//                    itemView.context.getString(R.string.),
-//                    recipe.title
-//                )
+                binding.ivRecipe.contentDescription = String.format(
+                    itemView.context.getString(R.string.recipe_image_description),
+                    recipe.title
+                )
             } catch (e: Exception) {
                 Log.e("RecipesListFragment", "Ошибка загрузки изображения: ${recipe.title}", e)
             }

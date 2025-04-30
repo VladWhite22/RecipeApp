@@ -1,11 +1,13 @@
-package com.example.recipeapp
+package com.example.recipeapp.categoresList
 
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recipeapp.R
 import com.example.recipeapp.databinding.ItemCategoryBinding
+import com.example.recipeapp.Category
 
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
@@ -22,7 +24,6 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
 
     class ViewHolder(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(category: Category) {
-
             binding.tvCategoryName.text = category.title
             binding.tvCategoryDescription.text = category.description
 

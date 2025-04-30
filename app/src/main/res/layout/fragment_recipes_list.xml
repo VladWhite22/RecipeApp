@@ -12,7 +12,7 @@
         android:layout_height="@dimen/layout_category_height_224">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/ivFragmentRecipeList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/burgers_recipes"
