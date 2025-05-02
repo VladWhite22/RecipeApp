@@ -1,6 +1,7 @@
 package com.example.recipeapp
 
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -41,29 +42,32 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
         initUI()
         initRecycler()
     }
-    fun initBundleData(){
+
+    fun initBundleData() {
         arguments?.let { args ->
-            argCategoryId = requireArguments().getInt(CategoriesListFragment.ARG_CATEGORY_ID)
-            argCategoryName = requireArguments().getString(CategoriesListFragment.ARG_CATEGORY_NAME)
-            argCategoryImageUrl = requireArguments().getString(ARG_CATEGORY_IMAGE_URL)
+            argCategoryId = args.getInt(CategoriesListFragment.ARG_CATEGORY_ID)
+            argCategoryName = args.getString(CategoriesListFragment.ARG_CATEGORY_NAME)
+            argCategoryImageUrl = args.getString(ARG_CATEGORY_IMAGE_URL)
         }
     }
-    fun initUI(){
 
-        // отображение изображения происходит неккоректно переходить на glide?
-        // для настройки UI элементов (заголовка, изображения)
+    fun initUI() {
         binding.tvBurgersRecipes.text = argCategoryName
-        try {
-            var imageName = argCategoryImageUrl?.dropLast(4)
+        argCategoryImageUrl?.let { imageUrl ->
+            // все так же плохо открывает изображение
+            try {
+                val context = requireContext()
+                val inputStream = context.assets.open(imageUrl)
+                val drawable = Drawable.createFromStream(inputStream, null)
+                binding.ivFragmentRecipeList.setImageDrawable(drawable)
+                inputStream.close()
+            } catch (e: Exception) {
+                Log.e("argCategoryImageUrl", "Failed to load image from assets: $imageUrl")
 
-            val imageUrl = resources.getIdentifier(imageName, "drawable", requireContext().packageName)
-            binding.ivFragmentRecipeList.setImageResource(imageUrl)
-            // argCategoryImageUrl not image
-        }catch (e: Exception) {
-            Log.e("argCategoryImageUrl", "image not found", e)
+            }
+
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -87,7 +91,6 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
             }
         })
     }
-
 
 
 }
