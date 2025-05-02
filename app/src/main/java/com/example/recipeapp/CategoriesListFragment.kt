@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.recipeapp.categoresList.CategoriesListAdapter
 import com.example.recipeapp.databinding.FragmentListCategoriesBinding
 
 class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
@@ -41,24 +42,26 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         const val ARG_CATEGORY_IMAGE_URL = "arg_category_image_url"
     }
 
-    val categories = STUB.getCategories()
+    private val categories = STUB.getCategories()
+
     fun openRecipesByCategoryId(categoryId:Int) {
 
-        val idCategory = categories.find{it.id==categoryId}
-        val categoryTitle = idCategory?.title
-        val categoryImageUrl = idCategory?.imageUrl
+        val idCategory = categories.find { it.id == categoryId }
+            val categoryTitle = idCategory?.title
+            val categoryImageUrl = idCategory?.imageUrl
 
-        val bundle = bundleOf(
-            ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to categoryTitle,
-            ARG_CATEGORY_IMAGE_URL to categoryImageUrl
-        )
+            val bundle = bundleOf(
+                ARG_CATEGORY_ID to categoryId,
+                ARG_CATEGORY_NAME to categoryTitle,
+                ARG_CATEGORY_IMAGE_URL to categoryImageUrl
+            )
 
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
-            addToBackStack(null)
-        }
+            parentFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
+                addToBackStack(null)
+            }
+
     }
 
     private fun initRecycler() {

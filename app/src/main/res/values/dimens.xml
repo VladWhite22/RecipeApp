@@ -18,4 +18,7 @@
     <dimen name="card_description_layout_8">8dp</dimen>
     <dimen name="card_image_height_130">130dp</dimen>
 
+    <dimen name="card_image_recipe_height_100">100dp</dimen>
+    <dimen name="recipes_recycler_8">8dp</dimen>
+
 </resources>
