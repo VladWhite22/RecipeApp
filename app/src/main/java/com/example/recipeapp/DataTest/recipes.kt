@@ -1,4 +1,8 @@
-package com.example.recipeapp
+package com.example.recipeapp.DataTest
+
+import com.example.aseducationalproject.Domain.Ingredient
+import com.example.recipeapp.Domain.Category
+import com.example.recipeapp.Domain.Recipe
 
 object STUB {
     private val categories: List<Category> = listOf(
@@ -235,6 +239,7 @@ object STUB {
     fun getCategories(): List<Category> {
         return categories
     }
+    fun getRecipeById(recipeId: Int): Recipe = burgerRecipes[recipeId]
 
     fun getRecipesByCategoryId( categoryId:Int):List<Recipe>{
         return if (categoryId == 0) burgerRecipes
