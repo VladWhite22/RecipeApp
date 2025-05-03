@@ -83,7 +83,7 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
     fun openRecipesByRecipeId(recipeId: Int) {
 
         //
-        val recipe: Recipe = getRecipeById(recipeId)
+        val recipe: Recipe? = getRecipeById(recipeId)
         val bundle = bundleOf(ARG_RECIPE to recipe)
         //
         parentFragmentManager?.commit {
