@@ -1,4 +1,4 @@
-package com.example.recipeapp
+package com.example.recipeapp.Categories
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.recipeapp.R
+import com.example.recipeapp.Recipes.RecipesListFragment
+import com.example.recipeapp.DataTest.STUB
 import com.example.recipeapp.categoresList.CategoriesListAdapter
 import com.example.recipeapp.databinding.FragmentListCategoriesBinding
 
@@ -40,6 +43,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         const val ARG_CATEGORY_ID = "arg_category_id"
         const val ARG_CATEGORY_NAME = "arg_category_name"
         const val ARG_CATEGORY_IMAGE_URL = "arg_category_image_url"
+        const val ARG_RECIPE = "arg_recipe"
     }
 
     private val categories = STUB.getCategories()

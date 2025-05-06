@@ -1,4 +1,4 @@
-package com.example.recipeapp
+package com.example.recipeapp.Recipes
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recipeapp.Domain.Recipe
+import com.example.recipeapp.R
 import com.example.recipeapp.databinding.ItemRecipeBinding
 
 class RecipesListAdapter(val dataSet: List<Recipe>) :
