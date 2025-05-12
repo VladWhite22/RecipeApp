@@ -21,4 +21,7 @@
     <dimen name="card_image_recipe_height_100">100dp</dimen>
     <dimen name="recipes_recycler_8">8dp</dimen>
 
+    <dimen name="fragment_recipe_basic_16dp">16dp</dimen>
+    <dimen name="fragment_recipe_basic_4dp">4dp</dimen>
+
 </resources>
