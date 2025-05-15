@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_category_height_224">
+        android:layout_height="@dimen/category_item_height">
 
         <ImageView
             android:id="@+id/ivFragmentRecipeList"
@@ -27,8 +27,8 @@
             style="@style/StyleMainTitle20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/liner_layout_16"
-            android:layout_marginBottom="@dimen/liner_layout_16"
+            android:layout_marginStart="@dimen/spacing_16"
+            android:layout_marginBottom="@dimen/spacing_16"
             android:background="@drawable/shape_text_view"
             android:text="@string/burger_item_category"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +43,7 @@
     android:scrollbars="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/recipes_recycler_8"
+    android:layout_margin="@dimen/spacing_8"
     app:spanCount="2">
 </androidx.recyclerview.widget.RecyclerView>
 

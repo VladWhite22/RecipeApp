@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fragment_layout_16">16dp</dimen>
-    <dimen name="fragment_layout_8">8dp</dimen>
-    <dimen name="liner_layout_709">709dp</dimen>
-    <dimen name="liner_layout_8">8dp</dimen>
-    <dimen name="liner_layout_16">16dp</dimen>
+    <!-- basic -->
+    <dimen name="spacing_4">4dp</dimen>
+    <dimen name="spacing_8">8dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
 
-    <dimen name="button_corner_radius_8">8dp</dimen>
-    <dimen name="button_layout_margin_end_4">4dp</dimen>
-    <dimen name="button_width">0dp</dimen>
+    <!-- button -->
+    <dimen name="button_corner_radius">8dp</dimen>
+    <dimen name="button_margin_end">4dp</dimen>
+    <dimen name="button_width_default">0dp</dimen>
 
-    <dimen name="category_text_view_164">164dp</dimen>
-    <dimen name="layout_category_height_224">224dp</dimen>
+    <!-- card -->
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="card_padding">8dp</dimen>
+    <dimen name="card_image_height">130dp</dimen>
+    <dimen name="card_image_recipe_height">100dp</dimen>
 
-    <dimen name="card_corner_radius_8">8dp</dimen>
-    <dimen name="card_layout_8">8dp</dimen>
-    <dimen name="card_description_layout_8">8dp</dimen>
-    <dimen name="card_image_height_130">130dp</dimen>
-
-    <dimen name="card_image_recipe_height_100">100dp</dimen>
-    <dimen name="recipes_recycler_8">8dp</dimen>
-
-    <dimen name="fragment_recipe_basic_16dp">16dp</dimen>
-    <dimen name="fragment_recipe_basic_4dp">4dp</dimen>
+    <!-- specific size -->
+    <dimen name="category_item_width">164dp</dimen>
+    <dimen name="category_item_height">224dp</dimen>
+    <dimen name="max_width_liner_layout">709dp</dimen>
 
 </resources>
