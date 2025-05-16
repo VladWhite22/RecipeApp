@@ -17,7 +17,7 @@ import com.example.recipeapp.R
 import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
-class RecipeFragment: Fragment(R.layout.fragment_recipe) {
+class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
 
     private var _binding: FragmentRecipeBinding? = null
@@ -26,10 +26,9 @@ class RecipeFragment: Fragment(R.layout.fragment_recipe) {
             ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
-        _binding = FragmentRecipeBinding.inflate(inflater,container,false)
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -41,24 +40,23 @@ class RecipeFragment: Fragment(R.layout.fragment_recipe) {
             requireArguments().getParcelable(ARG_RECIPE)
         }
         initUI(recipe)
-        let { initRecycler(recipe) }
+        initRecycler(recipe)
     }
 
-    fun initUI(recipe: Recipe?)
-    {
+    fun initUI(recipe: Recipe?) {
         val drawable = try {
-            Drawable.createFromStream(recipe?.imageUrl?.let { this.context?.assets?.open(it) }, null)
+            Drawable.createFromStream(
+                recipe?.imageUrl?.let { this.context?.assets?.open(it) }, null
+            )
         } catch (e: Exception) {
             Log.d("Not found", "Image not found: ${recipe?.imageUrl}")
             null
         }
 
-        if (recipe?.title == null)
-        {
+        if (recipe?.title == null) {
             recipe?.title == "я потерял ${recipe?.title}"
         }
-        if (recipe?.title != null)
-        {
+        if (recipe?.title != null) {
             binding.tvRecipe.text = recipe.title
         }
         binding.ivRecipe.setImageDrawable(drawable)
@@ -66,26 +64,25 @@ class RecipeFragment: Fragment(R.layout.fragment_recipe) {
 
     private fun initRecycler(recipeId: Recipe?) {
         val id: Int = recipeId?.id ?: 1
-        val ingredientsAdapter = IngredientsAdapter(STUB.getRecipeById(id)?.ingredients ?:emptyList() )
+        val ingredientsAdapter =
+            IngredientsAdapter(STUB.getRecipeById(id)?.ingredients ?: emptyList())
         binding.rvIngredients.adapter = ingredientsAdapter
         val methodsAdapter = MethodsAdapther(STUB.getRecipeById(id)?.method ?: emptyList())
         binding.rvMethod.adapter = methodsAdapter
-        val divider =
-            MaterialDividerItemDecoration(
-                this.requireContext(),
-                LinearLayoutManager.VERTICAL
-            ).apply {
-                isLastItemDecorated = false
-                dividerInsetStart = 24
-                dividerInsetEnd = 24
-                dividerColor =
-                    ContextCompat.getColor(requireContext(), R.color.recipe_fragment_color)
-                dividerThickness = 6
-            }
+        val divider = MaterialDividerItemDecoration(
+            this.requireContext(), LinearLayoutManager.VERTICAL
+        ).apply {
+            isLastItemDecorated = false
+            dividerInsetStart = 24
+            dividerInsetEnd = 24
+            dividerColor = ContextCompat.getColor(requireContext(), R.color.recipe_fragment_color)
+            dividerThickness = 6
+        }
 
         binding.rvIngredients.addItemDecoration(divider)
         binding.rvMethod.addItemDecoration(divider)
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/spacing_8"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardCornerRadius="@dimen/corner_radius"
     android:contentDescription="">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,8 +17,8 @@
         <ImageView
             android:id="@+id/ivRecipe"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/card_image_recipe_height"
-            android:contentDescription="@string/image_rcipt_card"
+            android:layout_height="@dimen/card_image_height_130"
+            android:contentDescription="@string/image_recipe_card"
             android:scaleType="centerCrop"
             android:src="@drawable/bcg_recipes_list"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,12 +28,13 @@
 
         <TextView
             android:id="@+id/tvRecipeName"
+            android:padding="@dimen/spacing_8"
             style="@style/StyleTitleCategoryList14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/card_padding"
-            android:layout_marginTop="@dimen/card_padding"
-            android:layout_marginBottom="@dimen/card_padding"
+            android:layout_marginStart="@dimen/spacing_8"
+            android:layout_marginTop="@dimen/spacing_8"
+            android:layout_marginBottom="@dimen/spacing_8"
             android:text="@string/burger_item_category"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivRecipe">

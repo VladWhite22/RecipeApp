@@ -3,9 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_8"
+    >
 
     <TextView
+        style="@style/ItemIngredient14"
         android:id="@+id/tvIngredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,6 +19,7 @@
         tools:text="Ингредиенты" />
 
     <TextView
+        style="@style/ItemIngredient14"
         android:id="@+id/tvQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

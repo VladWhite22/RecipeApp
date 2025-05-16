@@ -6,19 +6,15 @@
     <dimen name="spacing_16">16dp</dimen>
 
     <!-- button -->
-    <dimen name="button_corner_radius">8dp</dimen>
-    <dimen name="button_margin_end">4dp</dimen>
+    <dimen name="corner_radius">8dp</dimen>
     <dimen name="button_width_default">0dp</dimen>
 
     <!-- card -->
-    <dimen name="card_corner_radius">8dp</dimen>
-    <dimen name="card_padding">8dp</dimen>
-    <dimen name="card_image_height">130dp</dimen>
+    <dimen name="card_image_height_130">130dp</dimen>
+    <dimen name="card_image_height_100">100dp</dimen>
     <dimen name="card_image_recipe_height">100dp</dimen>
 
     <!-- specific size -->
-    <dimen name="category_item_width">164dp</dimen>
     <dimen name="category_item_height">224dp</dimen>
-    <dimen name="max_width_liner_layout">709dp</dimen>
 
 </resources>
