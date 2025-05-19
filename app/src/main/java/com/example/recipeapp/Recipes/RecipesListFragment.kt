@@ -60,7 +60,6 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
     fun initUI() {
         binding.tvBurgersRecipes.text = argCategoryName
         argCategoryImageUrl?.let { imageUrl ->
-            // все так же плохо открывает изображение
             try {
                 val context = requireContext()
                 val inputStream = context.assets.open(imageUrl)
@@ -86,7 +85,7 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
         val recipe: Recipe? = getRecipeById(recipeId)
         val bundle = bundleOf(ARG_RECIPE to recipe)
         //
-        parentFragmentManager?.commit {
+        parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)
             addToBackStack(null)
