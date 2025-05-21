@@ -19,8 +19,9 @@ import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment(R.layout.fragment_recipe) {
-
-    private lateinit var seekBar: SeekBar
+    // пришлось вынести инициализацию(ingredientsAdapter) сюда с локальной переменной не работала
+    // функция updateIngredients
+    private lateinit var ingredientsAdapter: IngredientsAdapter
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -35,7 +36,6 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        seekBar = (_binding?.sbFragmentRecipe ?: 0) as SeekBar
         val recipe: Recipe? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
         } else {
@@ -61,20 +61,10 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
             binding.tvRecipe.text = recipe.title
         }
         binding.ivRecipe.setImageDrawable(drawable)
-    }
-
-    private fun initRecycler(recipeId: Recipe?) {
-        val id: Int = recipeId?.id ?: 1
-        val ingredientsAdapter =
-            IngredientsAdapter(STUB.getRecipeById(id)?.ingredients ?: emptyList())
-        // не понимаю зачем выводить операции в класс IngredientsAdapter.
-        //  из за того что у нас там биндинги на элементы вывода на экран? получается 77 строка тоже идет в адаптер?
-        // val textView: TextView = binding.tvIngredient
-        //val quantity: TextView = binding.tvQuantity
-
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.sbFragmentRecipe.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.tvFragmentRecipe.text = "Порции: $progress"
+                binding.tvFragmentRecipeNumber.text = progress.toString()
                 ingredientsAdapter.updateIngredients(progress.toDouble())
             }
 
@@ -84,6 +74,12 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
+
+    }
+
+    private fun initRecycler(recipeId: Recipe?) {
+        val id: Int = recipeId?.id ?: 1
+        ingredientsAdapter = IngredientsAdapter(STUB.getRecipeById(id)?.ingredients ?: emptyList())
         binding.rvIngredients.adapter = ingredientsAdapter
         val methodsAdapter = MethodsAdapther(STUB.getRecipeById(id)?.method ?: emptyList())
         binding.rvMethod.adapter = methodsAdapter
@@ -93,18 +89,13 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
             isLastItemDecorated = false
             dividerInsetStart = 24
             dividerInsetEnd = 24
-            dividerColor =
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.recipe_fragment_color
-                )
+            dividerColor = ContextCompat.getColor(
+                requireContext(), R.color.recipe_fragment_color
+            )
             dividerThickness = 6
         }
-
         binding.rvIngredients.addItemDecoration(divider)
         binding.rvMethod.addItemDecoration(divider)
-
-
     }
 
     override fun onDestroyView() {
@@ -114,3 +105,5 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
 
 }
+
+

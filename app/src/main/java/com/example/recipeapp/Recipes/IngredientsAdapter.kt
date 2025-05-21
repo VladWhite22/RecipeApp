@@ -29,14 +29,9 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
         var ingredient: Ingredient = dataSet[position]
         holder.textView.text = ingredient.description
         holder.quantity.text = "${ingredient.quantity} ${ingredient.unitOfMeasure}"
-        var updateQuant = ingredient.quantity.toDouble() * quantity
-        if (updateQuant % 1 == 0.0) {
-            val updateQuantWithoutZero = updateQuant.toInt()
-            holder.quantity.text = "${updateQuantWithoutZero} ${ingredient.unitOfMeasure}"
-        } else {
-            holder.quantity.text = "${updateQuant} ${ingredient.unitOfMeasure}"
-        }
-
+        var updateQuant = (ingredient.quantity.toDouble() * quantity).toBigDecimal().setScale(2)
+            .stripTrailingZeros().toPlainString()
+        holder.quantity.text = "${updateQuant} ${ingredient.unitOfMeasure}"
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -45,5 +40,8 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
         quantity = progress
         notifyDataSetChanged()
     }
+
+    companion object
+
 
 }

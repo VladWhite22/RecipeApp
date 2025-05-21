@@ -16,6 +16,15 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+
+    <style name="Title20" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/montserrat_alternates_medium</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/categoryTextViewColor</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="StyleTitleCategoryList14" parent="TextAppearance.AppCompat">
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/montserrat_alternates_medium</item>
@@ -39,6 +48,13 @@
     <style name="StyleNavButton" parent="Widget.Material3.Button">
         <item name="cornerRadius">@dimen/corner_radius</item>
         <item name="android:textAppearance">@style/StyleTitle14</item>
+    </style>
+
+    <style name="Portions_text">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/portionQuantityColor</item>
     </style>
 
 </resources>
