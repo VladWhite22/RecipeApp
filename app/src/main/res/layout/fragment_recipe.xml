@@ -78,13 +78,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <SeekBar
+                style="@style/styleSeekBar"
                 android:id="@+id/sbFragmentRecipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_4"
                 android:max="5"
                 android:min="0"
-                android:padding="@dimen/spacing_6"
+                android:padding="@dimen/spacing_8"
                 android:progress="1" />
 
             <androidx.recyclerview.widget.RecyclerView
