@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,8 +19,9 @@ import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment(R.layout.fragment_recipe) {
-
-
+    // пришлось вынести инициализацию(ingredientsAdapter) сюда с локальной переменной не работала
+    // функция updateIngredients
+    private lateinit var ingredientsAdapter: IngredientsAdapter
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -52,7 +54,6 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
             Log.d("Not found", "Image not found: ${recipe?.imageUrl}")
             null
         }
-
         if (recipe?.title == null) {
             recipe?.title == "я потерял ${recipe?.title}"
         }
@@ -60,12 +61,25 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
             binding.tvRecipe.text = recipe.title
         }
         binding.ivRecipe.setImageDrawable(drawable)
+        binding.sbFragmentRecipe.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                binding.tvFragmentRecipeNumber.text = progress.toString()
+                ingredientsAdapter.updateIngredients(progress.toDouble())
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+
     }
 
     private fun initRecycler(recipeId: Recipe?) {
         val id: Int = recipeId?.id ?: 1
-        val ingredientsAdapter =
-            IngredientsAdapter(STUB.getRecipeById(id)?.ingredients ?: emptyList())
+        ingredientsAdapter = IngredientsAdapter(STUB.getRecipeById(id)?.ingredients ?: emptyList())
         binding.rvIngredients.adapter = ingredientsAdapter
         val methodsAdapter = MethodsAdapther(STUB.getRecipeById(id)?.method ?: emptyList())
         binding.rvMethod.adapter = methodsAdapter
@@ -75,10 +89,11 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
             isLastItemDecorated = false
             dividerInsetStart = 24
             dividerInsetEnd = 24
-            dividerColor = ContextCompat.getColor(requireContext(), R.color.recipe_fragment_color)
+            dividerColor = ContextCompat.getColor(
+                requireContext(), R.color.recipe_fragment_color
+            )
             dividerThickness = 6
         }
-
         binding.rvIngredients.addItemDecoration(divider)
         binding.rvMethod.addItemDecoration(divider)
     }
@@ -90,3 +105,5 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
 
 }
+
+

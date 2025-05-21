@@ -7,6 +7,7 @@
     <color name="categoryButtonColor">#525DC0</color>
     <color name="categoryTextViewColor">#5F3678</color>
     <color name="categoryDescriptionColor">#666666</color>
+    <color name="portionQuantityColor">#626466</color>
     <color name="recipe_fragment_color">#F5F5F5</color>
 
 </resources>
