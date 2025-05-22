@@ -24,6 +24,7 @@
                 android:src="@drawable/bcg_recipe" />
 
             <ImageButton
+                android:contentDescription="@string/imageButtonFavorite"
                 android:id="@+id/ibFavorite"
                 android:layout_width="@dimen/favorite_button"
                 android:layout_height="@dimen/favorite_button"
