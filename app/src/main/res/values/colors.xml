@@ -9,5 +9,7 @@
     <color name="categoryDescriptionColor">#666666</color>
     <color name="portionQuantityColor">#626466</color>
     <color name="recipe_fragment_color">#F5F5F5</color>
+    <color name="seekbar_color">#A1A9F9</color>
+    <color name="seekbar_color_thumb">#525DC0</color>
 
 </resources>
