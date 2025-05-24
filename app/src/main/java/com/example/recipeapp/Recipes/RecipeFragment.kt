@@ -19,8 +19,6 @@ import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment(R.layout.fragment_recipe) {
-    // пришлось вынести инициализацию(ingredientsAdapter) сюда с локальной переменной не работала
-    // функция updateIngredients
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -59,6 +57,19 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         }
         if (recipe?.title != null) {
             binding.tvRecipe.text = recipe.title
+        }
+        binding.ibFavorite.setOnClickListener {
+            try {
+                binding.ibFavorite.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_heart
+                    )
+                )
+            } catch (e: Exception) {
+                Log.d("Not found", "Image not found: ${"ibFavorite"}")
+                null
+            }
         }
         binding.ivRecipe.setImageDrawable(drawable)
         binding.sbFragmentRecipe.setOnSeekBarChangeListener(object :

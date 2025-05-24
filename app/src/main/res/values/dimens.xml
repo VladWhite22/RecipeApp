@@ -9,6 +9,7 @@
     <!-- button -->
     <dimen name="corner_radius">8dp</dimen>
     <dimen name="button_width_default">0dp</dimen>
+    <dimen name="favorite_button">40dp</dimen>
 
     <!-- card -->
     <dimen name="card_image_height_130">130dp</dimen>
