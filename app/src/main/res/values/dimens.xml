@@ -5,7 +5,7 @@
     <dimen name="spacing_6">6dp</dimen>
     <dimen name="spacing_8">8dp</dimen>
     <dimen name="spacing_16">16dp</dimen>
-
+    <dimen name="spacing_50">50dp</dimen>
     <!-- button -->
     <dimen name="corner_radius">8dp</dimen>
     <dimen name="button_width_default">0dp</dimen>

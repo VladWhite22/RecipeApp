@@ -239,11 +239,20 @@ object STUB {
     fun getCategories(): List<Category> {
         return categories
     }
+
     fun getRecipeById(recipeId: Int): Recipe? = burgerRecipes.find { it.id == recipeId }
 
-    fun getRecipesByCategoryId( categoryId:Int):List<Recipe>{
+    fun getRecipesByCategoryId(categoryId: Int): List<Recipe> {
         return if (categoryId == 0) burgerRecipes
         else listOf()
+    }
+
+    fun getRecipesByIds(set: Set<Int>): List<Recipe> {
+        val returning = mutableListOf<Recipe>()
+        val set = set.map { it.toInt() }.sorted()
+        set.forEach { id -> burgerRecipes.forEach {
+            if (id == it.id) returning.add(it) } }
+        return returning
     }
 
 }
