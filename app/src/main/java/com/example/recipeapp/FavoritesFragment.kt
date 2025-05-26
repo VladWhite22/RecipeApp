@@ -19,6 +19,7 @@ import com.example.recipeapp.databinding.FragmentFavoritesBinding
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     private lateinit var favoritesList: Set<Int>
     private lateinit var recipeList: List<Recipe>
+    // не забыть спросить
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding

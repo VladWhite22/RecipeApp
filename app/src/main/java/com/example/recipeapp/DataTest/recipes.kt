@@ -248,11 +248,9 @@ object STUB {
     }
 
     fun getRecipesByIds(set: Set<Int>): List<Recipe> {
-        val returning = mutableListOf<Recipe>()
-        val set = set.map { it.toInt() }.sorted()
-        set.forEach { id -> burgerRecipes.forEach {
-            if (id == it.id) returning.add(it) } }
+        val returning =  burgerRecipes.filter { it.id in set }
         return returning
+        // не забыть спросить о скорости работы
     }
 
 }
