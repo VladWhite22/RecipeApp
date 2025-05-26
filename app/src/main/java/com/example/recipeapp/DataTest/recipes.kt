@@ -239,11 +239,18 @@ object STUB {
     fun getCategories(): List<Category> {
         return categories
     }
+
     fun getRecipeById(recipeId: Int): Recipe? = burgerRecipes.find { it.id == recipeId }
 
-    fun getRecipesByCategoryId( categoryId:Int):List<Recipe>{
+    fun getRecipesByCategoryId(categoryId: Int): List<Recipe> {
         return if (categoryId == 0) burgerRecipes
         else listOf()
+    }
+
+    fun getRecipesByIds(set: Set<Int>): List<Recipe> {
+        val returning =  burgerRecipes.filter { it.id in set }
+        return returning
+        // не забыть спросить о скорости работы
     }
 
 }

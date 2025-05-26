@@ -12,7 +12,7 @@ import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.recipeapp.Categories.CategoriesListFragment.Companion.ARG_RECIPE
+import com.example.recipeapp.Const.ARG_RECIPE
 import com.example.recipeapp.DataTest.STUB
 import com.example.recipeapp.Domain.Recipe
 import com.example.recipeapp.FAVORITE_SET_KEY

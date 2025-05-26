@@ -17,4 +17,6 @@
     <string name="cooking_type">Способ приготовления</string>
     <string name="portions">Порции:</string>
     <string name="imageButtonFavorite">добавить в избранное </string>
+    <string name="favorites">Избранное</string>
+    <string name="hide_text">Вы еще не добавили ни одного рецепта в избранное</string>
 </resources>
