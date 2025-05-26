@@ -1,4 +1,4 @@
-package com.example.recipeapp.Domain
+package com.example.recipeapp.model
 
 import android.os.Parcelable
 import com.example.aseducationalproject.Domain.Ingredient

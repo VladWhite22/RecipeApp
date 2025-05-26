@@ -1,8 +1,8 @@
-package com.example.recipeapp.DataTest
+package com.example.recipeapp.data
 
 import com.example.aseducationalproject.Domain.Ingredient
-import com.example.recipeapp.Domain.Category
-import com.example.recipeapp.Domain.Recipe
+import com.example.recipeapp.model.Category
+import com.example.recipeapp.model.Recipe
 
 object STUB {
     private val categories: List<Category> = listOf(

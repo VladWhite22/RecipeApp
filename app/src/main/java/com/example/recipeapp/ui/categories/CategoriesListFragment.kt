@@ -1,4 +1,4 @@
-package com.example.recipeapp.Categories
+package com.example.recipeapp.ui.categories
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +12,8 @@ import com.example.recipeapp.Const.ARG_CATEGORY_ID
 import com.example.recipeapp.Const.ARG_CATEGORY_IMAGE_URL
 import com.example.recipeapp.Const.ARG_CATEGORY_NAME
 import com.example.recipeapp.R
-import com.example.recipeapp.Recipes.RecipesListFragment
-import com.example.recipeapp.DataTest.STUB
+import com.example.recipeapp.ui.recipes.recipeList.RecipesListFragment
+import com.example.recipeapp.data.STUB
 import com.example.recipeapp.categoresList.CategoriesListAdapter
 import com.example.recipeapp.databinding.FragmentListCategoriesBinding
 
