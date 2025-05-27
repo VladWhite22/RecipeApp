@@ -1,4 +1,4 @@
-package com.example.recipeapp.Recipes
+package com.example.recipeapp.ui.recipes.recipeList
 
 
 import android.graphics.drawable.Drawable
@@ -13,11 +13,12 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.recipeapp.Const
 import com.example.recipeapp.Const.ARG_RECIPE
-import com.example.recipeapp.DataTest.STUB
-import com.example.recipeapp.DataTest.STUB.getRecipeById
-import com.example.recipeapp.Domain.Recipe
+import com.example.recipeapp.data.STUB
+import com.example.recipeapp.data.STUB.getRecipeById
+import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.FragmentRecipesListBinding
+import com.example.recipeapp.ui.recipes.recipe.RecipeFragment
 
 
 class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {

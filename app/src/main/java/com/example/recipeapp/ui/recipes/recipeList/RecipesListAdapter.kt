@@ -1,4 +1,4 @@
-package com.example.recipeapp.Recipes
+package com.example.recipeapp.ui.recipes.recipeList
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.recipeapp.Domain.Recipe
+import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.ItemRecipeBinding
 

@@ -1,6 +1,5 @@
-package com.example.recipeapp.Recipes
+package com.example.recipeapp.ui.recipes.recipe
 
-import android.service.autofill.Dataset
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView

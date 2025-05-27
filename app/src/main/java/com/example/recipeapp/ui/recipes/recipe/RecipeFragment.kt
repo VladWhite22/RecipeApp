@@ -1,4 +1,4 @@
-package com.example.recipeapp.Recipes
+package com.example.recipeapp.ui.recipes.recipe
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -13,8 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeapp.Const.ARG_RECIPE
-import com.example.recipeapp.DataTest.STUB
-import com.example.recipeapp.Domain.Recipe
+import com.example.recipeapp.data.STUB
+import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.FAVORITE_SET_KEY
 import com.example.recipeapp.R
 import com.example.recipeapp.SP_KEY

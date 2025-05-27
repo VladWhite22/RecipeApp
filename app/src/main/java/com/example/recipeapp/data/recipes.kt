@@ -1,8 +1,8 @@
-package com.example.recipeapp.DataTest
+package com.example.recipeapp.data
 
 import com.example.aseducationalproject.Domain.Ingredient
-import com.example.recipeapp.Domain.Category
-import com.example.recipeapp.Domain.Recipe
+import com.example.recipeapp.model.Category
+import com.example.recipeapp.model.Recipe
 
 object STUB {
     private val categories: List<Category> = listOf(
@@ -250,7 +250,8 @@ object STUB {
     fun getRecipesByIds(set: Set<Int>): List<Recipe> {
         val returning =  burgerRecipes.filter { it.id in set }
         return returning
-        // не забыть спросить о скорости работы
+        // где я могу проверить код на скорость работы
+        // например хочу взять этот кусок, изолировать и сравнить скорость работы с forEach
     }
 
 }

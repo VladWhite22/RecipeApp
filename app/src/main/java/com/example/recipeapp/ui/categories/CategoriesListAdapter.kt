@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.ItemCategoryBinding
-import com.example.recipeapp.Domain.Category
+import com.example.recipeapp.model.Category
 
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
