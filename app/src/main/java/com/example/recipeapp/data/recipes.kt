@@ -250,8 +250,6 @@ object STUB {
     fun getRecipesByIds(set: Set<Int>): List<Recipe> {
         val returning =  burgerRecipes.filter { it.id in set }
         return returning
-        // где я могу проверить код на скорость работы
-        // например хочу взять этот кусок, изолировать и сравнить скорость работы с forEach
     }
 
 }

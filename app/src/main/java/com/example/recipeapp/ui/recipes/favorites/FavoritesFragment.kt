@@ -23,8 +23,6 @@ import com.example.recipeapp.databinding.FragmentFavoritesBinding
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     private lateinit var favoritesList: Set<Int>
     private lateinit var recipeList: List<Recipe>
-    // не понимаю почему стоит производить инициализацию в onViewCreated, а  не тут
-    // почему приложение падает.
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding
