@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipeapp.Const
 import com.example.recipeapp.FAVORITE_SET_KEY
@@ -19,8 +20,11 @@ import com.example.recipeapp.data.STUB.getRecipeById
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.ui.recipes.recipe.RecipeFragment
 import com.example.recipeapp.databinding.FragmentFavoritesBinding
+import com.example.recipeapp.ui.recipes.recipe.RecipeViewModel
+import kotlin.getValue
 
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
+
     private lateinit var favoritesList: Set<Int>
     private lateinit var recipeList: List<Recipe>
     private var _binding: FragmentFavoritesBinding? = null
@@ -40,7 +44,11 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        favoritesList = getFavorites().mapNotNull { it.toIntOrNull() }.toSet()
+        val viewModel: RecipeViewModel by viewModels()
+        val favoritesPrefs = viewModel.getFavorites()
+        favoritesList = favoritesPrefs.getStringSet(FAVORITE_SET_KEY, emptySet())
+            ?.mapNotNull { it.toIntOrNull() }
+            ?.toSet() ?: emptySet()
         recipeList = STUB.getRecipesByIds(favoritesList)
         initRecycler()
     }
@@ -80,9 +88,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         _binding = null
     }
 
-    fun getFavorites(): HashSet<String> {
-        val sharedPrefs = requireContext().getSharedPreferences(SP_KEY, Context.MODE_PRIVATE)
-        return HashSet<String>(sharedPrefs.getStringSet(FAVORITE_SET_KEY, emptySet()))
-    }
+
 
 }

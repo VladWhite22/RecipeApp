@@ -26,7 +26,6 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
     private val viewModel: RecipeViewModel by viewModels()
 
-    private var favoriteBol = false
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -47,69 +46,63 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         } else {
             requireArguments().getParcelable(ARG_RECIPE)
         }
-        viewModel.recipeState.observe(viewLifecycleOwner){
-            Log.d("RecipeViewModel", "onViewCreated: isFavorite: ${it.isFavorite}")
-        }
-        initUI(recipe)
+        viewModel.loadRecipe(recipe?.id)
+        initUI()
         initRecycler(recipe)
     }
 
-    fun initUI(recipe: Recipe?) {
-        val drawable = try {
-            Drawable.createFromStream(
-                recipe?.imageUrl?.let { this.context?.assets?.open(it) }, null
-            )
-        } catch (e: Exception) {
-            Log.d("Not found", "Image not found: ${recipe?.imageUrl}")
-            null
-        }
-        if (recipe?.title == null) {
-            recipe?.title == "я потерял ${recipe?.title}"
-        }
-        if (recipe?.title != null) {
-            binding.tvRecipe.text = recipe.title
-        }
-        val favoriteSet = getFavorites()
+    fun initUI() {
+        viewModel.recipeState.observe(viewLifecycleOwner) { state ->
+            state?.let {
+                val drawable = try {
+                    Drawable.createFromStream(
+                        state.recipe?.imageUrl?.let { this.context?.assets?.open(it) }, null
+                    )
+                } catch (e: Exception) {
+                    Log.d("Not found", "Image not found: ${state.recipe?.imageUrl}")
+                    null
+                }
+                if (state.recipe?.title == null) {
+                    state.recipe?.title == "я потерял ${state.recipe?.title}"
+                }
+                if (state.recipe?.title != null) {
+                    binding.tvRecipe.text = state.recipe.title
+                }
 
-        if (recipe?.id.toString() in favoriteSet) {
-            favoriteBol = true
-            binding.ibFavorite.setImageResource(R.drawable.ic_heart)
-        } else {
-            favoriteBol = false
-            binding.ibFavorite.setImageResource(R.drawable.ic_heart_empty)
-        }
-        binding.ibFavorite.setOnClickListener {
-            if (favoriteBol) {
-                favoriteBol = false
-                binding.ibFavorite.setImageResource(R.drawable.ic_heart_empty)
-                favoriteSet.remove(recipe?.id.toString())
-                saveFavorites(favoriteSet)
-            } else {
-                favoriteBol = true
-                binding.ibFavorite.setImageResource(R.drawable.ic_heart)
-                favoriteSet.add(recipe?.id.toString())
-                saveFavorites(favoriteSet)
-            }
-        }
-        binding.ivRecipe.setImageDrawable(drawable)
-        binding.sbFragmentRecipe.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.tvFragmentRecipeNumber.text = progress.toString()
-                ingredientsAdapter.updateIngredients(progress.toDouble())
-            }
+                if (state.isFavorite == true) {
+                    binding.ibFavorite.setImageResource(R.drawable.ic_heart)
+                } else {
+                    binding.ibFavorite.setImageResource(R.drawable.ic_heart_empty)
+                }
+                binding.ibFavorite.setOnClickListener {
+                    viewModel.onFavoriteClicked()
+                }
+                binding.ivRecipe.setImageDrawable(drawable)
+                binding.sbFragmentRecipe.setOnSeekBarChangeListener(object :
+                    SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        binding.tvFragmentRecipeNumber.text = progress.toString()
+                        ingredientsAdapter.updateIngredients(progress.toDouble())
+                    }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    }
+                })
             }
-        })
+        }
     }
 
     private fun initRecycler(recipeId: Recipe?) {
         val id: Int = recipeId?.id ?: 1
-        ingredientsAdapter = IngredientsAdapter(STUB.getRecipeById(id)?.ingredients ?: emptyList())
+        ingredientsAdapter =
+            IngredientsAdapter(STUB.getRecipeById(id)?.ingredients ?: emptyList())
         binding.rvIngredients.adapter = ingredientsAdapter
         val methodsAdapter = MethodsAdapther(STUB.getRecipeById(id)?.method ?: emptyList())
         binding.rvMethod.adapter = methodsAdapter
@@ -133,15 +126,9 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         _binding = null
     }
 
-    fun saveFavorites(favorites: Set<String>) {
-        val sharedPrefs = context?.getSharedPreferences(SP_KEY, Context.MODE_PRIVATE)
-        sharedPrefs?.edit()?.putStringSet(FAVORITE_SET_KEY, favorites)?.apply()
-    }
 
-    fun getFavorites(): HashSet<String> {
-        val sharedPrefs = requireContext().getSharedPreferences(SP_KEY, Context.MODE_PRIVATE)
-        return HashSet<String>(sharedPrefs.getStringSet(FAVORITE_SET_KEY, emptySet()))
-    }
+
+
 }
 
 
