@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeapp.Const.ARG_RECIPE
 import com.example.recipeapp.data.STUB
@@ -22,6 +23,9 @@ import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment(R.layout.fragment_recipe) {
+
+    private val viewModel: RecipeViewModel by viewModels()
+
     private var favoriteBol = false
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private var _binding: FragmentRecipeBinding? = null
@@ -42,6 +46,9 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
         } else {
             requireArguments().getParcelable(ARG_RECIPE)
+        }
+        viewModel.recipeState.observe(viewLifecycleOwner){
+            Log.d("RecipeViewModel", "onViewCreated: isFavorite: ${it.isFavorite}")
         }
         initUI(recipe)
         initRecycler(recipe)
