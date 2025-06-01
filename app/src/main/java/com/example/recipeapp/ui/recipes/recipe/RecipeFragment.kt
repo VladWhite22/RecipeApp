@@ -1,6 +1,5 @@
 package com.example.recipeapp.ui.recipes.recipe
 
-import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -16,9 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeapp.Const.ARG_RECIPE
 import com.example.recipeapp.data.STUB
 import com.example.recipeapp.model.Recipe
-import com.example.recipeapp.FAVORITE_SET_KEY
 import com.example.recipeapp.R
-import com.example.recipeapp.SP_KEY
 import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
@@ -46,7 +43,7 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         } else {
             requireArguments().getParcelable(ARG_RECIPE)
         }
-        viewModel.loadRecipe(recipe?.id)
+        viewModel.loadRecipe(recipe?.id ?: -1)
         initUI()
         initRecycler(recipe)
     }

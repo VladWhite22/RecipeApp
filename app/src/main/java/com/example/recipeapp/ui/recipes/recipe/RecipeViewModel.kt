@@ -15,7 +15,7 @@ import androidx.core.content.edit
 class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
     data class RecipeUIState(
         val recipe: Recipe? = null,
-        var isFavorite: Boolean = false,
+        val isFavorite: Boolean = false,
         val portionsCount: Int = 1,
     )
 
@@ -28,7 +28,11 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         privateRecipeState.value = RecipeUIState(isFavorite = true)
     }
 
-    fun loadRecipe(id: Int?) {
+    fun loadRecipe(id: Int) {
+        if (id == -1) {
+            Log.d("RecipeViewModel", "id == -1, download nothing  ")
+            return
+        }
         val recipe = STUB.getRecipeById(id)
         val favorites =
             getFavorites().getStringSet(FAVORITE_SET_KEY, mutableSetOf()) ?: mutableSetOf()
@@ -40,8 +44,20 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         Log.d("RecipeViewModel", "privateRecipeState.value:${privateRecipeState.value}")
     }
 
-    fun getFavorites(): SharedPreferences {
+    private fun getFavorites(): SharedPreferences {
         return application.getSharedPreferences(FAVORITE_SET_KEY, Context.MODE_PRIVATE)
+    }
+
+    fun loadFavorites(): List<Recipe> {
+        return privateLoadFavorites()
+    }
+
+    private fun privateLoadFavorites(): List<Recipe> {
+        val favoritesPrefs = getFavorites()
+        val favoritesList = favoritesPrefs.getStringSet(FAVORITE_SET_KEY, emptySet())
+            ?.mapNotNull { it.toIntOrNull() }
+            ?.toSet() ?: emptySet()
+        return STUB.getRecipesByIds(favoritesList)
     }
 
     fun onFavoriteClicked() {
@@ -58,11 +74,9 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         } else {
             favorites.remove(recipeId.toString())
         }
-
         saveFavorites(favorites)
         privateRecipeState.value = currentState.copy(isFavorite = newFavoriteState)
     }
-
 
     fun saveFavorites(favorites: MutableSet<String>) {
         getFavorites().edit() {
