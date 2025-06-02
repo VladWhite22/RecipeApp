@@ -40,7 +40,6 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
