@@ -1,9 +1,7 @@
 package com.example.recipeapp.ui.recipes.recipe
 
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,14 +49,6 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
     fun initUI() {
         viewModel.recipeState.observe(viewLifecycleOwner) { state ->
             state?.let {
-                val drawable = try {
-                    Drawable.createFromStream(
-                        state.recipe?.imageUrl?.let { this.context?.assets?.open(it) }, null
-                    )
-                } catch (e: Exception) {
-                    Log.d("Not found", "Image not found: ${state.recipe?.imageUrl}")
-                    null
-                }
                 if (state.recipe?.title == null) {
                     state.recipe?.title == "я потерял ${state.recipe?.title}"
                 }
@@ -74,7 +64,7 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
                 binding.ibFavorite.setOnClickListener {
                     viewModel.onFavoriteClicked()
                 }
-                binding.ivRecipe.setImageDrawable(drawable)
+                binding.ivRecipe.setImageDrawable(viewModel.recipeState.value?.recipeImage)
                 binding.sbFragmentRecipe.setOnSeekBarChangeListener(object :
                     SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(
@@ -122,8 +112,6 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         super.onDestroyView()
         _binding = null
     }
-
-
 
 
 }
