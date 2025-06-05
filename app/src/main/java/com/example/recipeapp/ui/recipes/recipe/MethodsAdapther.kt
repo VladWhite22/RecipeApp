@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.aseducationalproject.Domain.Ingredient
 import com.example.recipeapp.databinding.ItemMethodBinding
 
-class MethodsAdapther(private val dataSet: List <String>):
+class MethodsAdapther(private var dataSet: List<String>) :
     RecyclerView.Adapter<MethodsAdapther.ViewHolder>() {
 
     class ViewHolder(binding: ItemMethodBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -14,7 +15,7 @@ class MethodsAdapther(private val dataSet: List <String>):
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val binding =
             ItemMethodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,8 +31,10 @@ class MethodsAdapther(private val dataSet: List <String>):
         holder.textView.text = "${position + 1}. $method"
 
     }
-
-
+    fun newData(dataSet: List<String>) {
+        this.dataSet = dataSet
+        notifyDataSetChanged()
+    }
 
     override fun getItemCount(): Int = dataSet.size
 

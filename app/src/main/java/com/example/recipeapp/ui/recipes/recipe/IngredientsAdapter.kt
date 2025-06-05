@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.aseducationalproject.Domain.Ingredient
 import com.example.recipeapp.databinding.ItemIngredientBinding
 
-class IngredientsAdapter(private val dataSet: List<Ingredient>) :
+class IngredientsAdapter(private var dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
     private var quantity: Double = 1.0
 
@@ -37,6 +37,11 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
 
     fun updateIngredients(progress: Double) {
         quantity = progress
+        notifyDataSetChanged()
+    }
+
+    fun newData(dataSet: List<Ingredient>) {
+        this.dataSet = dataSet
         notifyDataSetChanged()
     }
 

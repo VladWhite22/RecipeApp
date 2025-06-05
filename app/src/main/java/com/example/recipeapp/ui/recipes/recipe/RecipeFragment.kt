@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeapp.Const.ARG_RECIPE
-import com.example.recipeapp.data.STUB
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.FragmentRecipeBinding
@@ -20,8 +19,6 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
     private val viewModel: RecipeViewModel by viewModels()
-
-    private lateinit var ingredientsAdapter: IngredientsAdapter
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -43,19 +40,15 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         }
         viewModel.loadRecipe(recipe?.id ?: -1)
         initUI()
-        initRecycler(recipe)
     }
 
     fun initUI() {
+        val ingredientsAdapter = IngredientsAdapter(listOf())
+        val methodsAdapter = MethodsAdapther(listOf())
+        binding.rvIngredients.adapter = ingredientsAdapter
+        binding.rvMethod.adapter = methodsAdapter
         viewModel.recipeState.observe(viewLifecycleOwner) { state ->
             state?.let {
-                if (state.recipe?.title == null) {
-                    state.recipe?.title == "я потерял ${state.recipe?.title}"
-                }
-                if (state.recipe?.title != null) {
-                    binding.tvRecipe.text = state.recipe.title
-                }
-
                 if (state.isFavorite == true) {
                     binding.ibFavorite.setImageResource(R.drawable.ic_heart)
                 } else {
@@ -65,6 +58,14 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
                     viewModel.onFavoriteClicked()
                 }
                 binding.ivRecipe.setImageDrawable(viewModel.recipeState.value?.recipeImage)
+
+                state.recipe?.let {
+                    ingredientsAdapter.updateIngredients(state.portionsCount.toDouble())
+                    ingredientsAdapter.newData(it.ingredients)
+                    methodsAdapter.newData(it.method)
+                    binding.tvFragmentRecipeNumber.text = state.portionsCount.toString()
+                }
+
                 binding.sbFragmentRecipe.setOnSeekBarChangeListener(object :
                     SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(
@@ -72,8 +73,7 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
                         progress: Int,
                         fromUser: Boolean
                     ) {
-                        binding.tvFragmentRecipeNumber.text = progress.toString()
-                        ingredientsAdapter.updateIngredients(progress.toDouble())
+                        viewModel.updateStateOfSeekbar(progress)
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -84,15 +84,6 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
                 })
             }
         }
-    }
-
-    private fun initRecycler(recipeId: Recipe?) {
-        val id: Int = recipeId?.id ?: 1
-        ingredientsAdapter =
-            IngredientsAdapter(STUB.getRecipeById(id)?.ingredients ?: emptyList())
-        binding.rvIngredients.adapter = ingredientsAdapter
-        val methodsAdapter = MethodsAdapther(STUB.getRecipeById(id)?.method ?: emptyList())
-        binding.rvMethod.adapter = methodsAdapter
         val divider = MaterialDividerItemDecoration(
             this.requireContext(), LinearLayoutManager.VERTICAL
         ).apply {
