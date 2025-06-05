@@ -42,8 +42,9 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val image: Drawable? = try {
             Drawable.createFromStream(
                 this.application.assets?.open(recipe?.imageUrl ?: ""),
-                null)
-        }catch (e: Exception) {
+                null
+            )
+        } catch (e: Exception) {
             Log.d("RecipeViewModel", "Image not found: ${recipeState.value?.recipe?.imageUrl}")
             null
         }
@@ -62,6 +63,10 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     fun loadFavorites(): List<Recipe> {
         return privateLoadFavorites()
+    }
+
+    fun updateStateOfSeekbar(newState: Int) {
+        privateRecipeState.value = privateRecipeState.value?.copy(portionsCount = newState)
     }
 
     private fun privateLoadFavorites(): List<Recipe> {
