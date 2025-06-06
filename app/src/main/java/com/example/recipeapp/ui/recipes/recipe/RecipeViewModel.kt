@@ -42,8 +42,9 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val image: Drawable? = try {
             Drawable.createFromStream(
                 this.application.assets?.open(recipe?.imageUrl ?: ""),
-                null)
-        }catch (e: Exception) {
+                null
+            )
+        } catch (e: Exception) {
             Log.d("RecipeViewModel", "Image not found: ${recipeState.value?.recipe?.imageUrl}")
             null
         }
@@ -60,16 +61,8 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         return application.getSharedPreferences(FAVORITE_SET_KEY, Context.MODE_PRIVATE)
     }
 
-    fun loadFavorites(): List<Recipe> {
-        return privateLoadFavorites()
-    }
-
-    private fun privateLoadFavorites(): List<Recipe> {
-        val favoritesPrefs = getFavorites()
-        val favoritesList = favoritesPrefs.getStringSet(FAVORITE_SET_KEY, emptySet())
-            ?.mapNotNull { it.toIntOrNull() }
-            ?.toSet() ?: emptySet()
-        return STUB.getRecipesByIds(favoritesList)
+    fun updateStateOfSeekbar(newState: Int) {
+        privateRecipeState.value = privateRecipeState.value?.copy(portionsCount = newState)
     }
 
     fun onFavoriteClicked() {
