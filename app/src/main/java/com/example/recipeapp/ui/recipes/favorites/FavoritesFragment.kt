@@ -16,7 +16,6 @@ import com.example.recipeapp.data.STUB.getRecipeById
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.ui.recipes.recipe.RecipeFragment
 import com.example.recipeapp.databinding.FragmentFavoritesBinding
-import com.example.recipeapp.ui.recipes.recipe.RecipeViewModel
 import kotlin.getValue
 
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
@@ -56,7 +55,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun initRecycler() {
-        val viewModel: RecipeViewModel by viewModels()
+        val viewModel: FavoritesViewModel by viewModels()
         recipeList = viewModel.loadFavorites()
         if (recipeList.isEmpty()) {
             binding.rvFavorites.visibility = View.GONE

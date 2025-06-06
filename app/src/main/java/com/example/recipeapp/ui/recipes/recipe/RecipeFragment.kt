@@ -24,6 +24,24 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
 
+    class PortionSeekBarListener(
+        private val onChangeIngredients: (Int) -> Unit
+    ) : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(
+            seekBar: SeekBar?,
+            progress: Int,
+            fromUser: Boolean
+        ) {
+            onChangeIngredients(progress)
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+        }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -65,22 +83,8 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
                     methodsAdapter.newData(it.method)
                     binding.tvFragmentRecipeNumber.text = state.portionsCount.toString()
                 }
-
-                binding.sbFragmentRecipe.setOnSeekBarChangeListener(object :
-                    SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                        seekBar: SeekBar?,
-                        progress: Int,
-                        fromUser: Boolean
-                    ) {
-                        viewModel.updateStateOfSeekbar(progress)
-                    }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
+                binding.sbFragmentRecipe.setOnSeekBarChangeListener(PortionSeekBarListener {
+                    viewModel.updateStateOfSeekbar(it)
                 })
             }
         }
@@ -104,7 +108,5 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         _binding = null
     }
 
-
 }
-
 

@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aseducationalproject.Domain.Ingredient
 import com.example.recipeapp.databinding.ItemMethodBinding
 
-class MethodsAdapther(private var dataSet: List<String>) :
+class MethodsAdapther( var dataSet: List<String>) :
     RecyclerView.Adapter<MethodsAdapther.ViewHolder>() {
 
     class ViewHolder(binding: ItemMethodBinding) : RecyclerView.ViewHolder(binding.root) {

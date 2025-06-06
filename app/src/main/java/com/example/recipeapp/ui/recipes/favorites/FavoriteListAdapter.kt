@@ -10,7 +10,7 @@ import com.example.recipeapp.R
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.databinding.ItemRecipeBinding
 
-class FavoriteListAdapter(val dataSet: List<Recipe>) :
+class FavoriteListAdapter( val dataSet: List<Recipe>) :
     RecyclerView.Adapter<FavoriteListAdapter.ViewHolder>() {
 
     fun interface OnItemClickListener {
