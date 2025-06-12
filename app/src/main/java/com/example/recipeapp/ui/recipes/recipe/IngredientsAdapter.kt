@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.aseducationalproject.Domain.Ingredient
 import com.example.recipeapp.databinding.ItemIngredientBinding
 
-class IngredientsAdapter(private var dataSet: List<Ingredient>) :
+class IngredientsAdapter(public var dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
     private var quantity: Double = 1.0
 
