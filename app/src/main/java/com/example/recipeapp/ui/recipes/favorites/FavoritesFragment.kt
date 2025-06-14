@@ -16,12 +16,11 @@ import com.example.recipeapp.data.STUB.getRecipeById
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.ui.recipes.recipe.RecipeFragment
 import com.example.recipeapp.databinding.FragmentFavoritesBinding
-import com.example.recipeapp.ui.recipes.recipe.RecipeViewModel
 import kotlin.getValue
 
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
-    private lateinit var recipeList: List<Recipe>
+
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding
@@ -56,23 +55,32 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun initRecycler() {
-        val viewModel: RecipeViewModel by viewModels()
-        recipeList = viewModel.loadFavorites()
-        if (recipeList.isEmpty()) {
-            binding.rvFavorites.visibility = View.GONE
-            binding.tvFavoriteHided.visibility = View.VISIBLE
-        } else {
-            val adapter = FavoriteListAdapter(recipeList)
-            binding.rvFavorites.layoutManager =
-                GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
-            binding.rvFavorites.adapter = adapter
-            adapter.setOnItemClickListener(object : FavoriteListAdapter.OnItemClickListener {
-                override fun onItemClick(categoryId: Int) {
-                    openRecipesByRecipesId(categoryId)
+
+        val viewModel: FavoritesViewModel by viewModels()
+        var recipeList: List<Recipe>
+        viewModel.loadFavorites()
+        viewModel.favoriteList.observe(viewLifecycleOwner) { state ->
+            state?.let { uiState ->
+                recipeList = uiState.favoriteList
+                if (recipeList.isEmpty()) {
+                    binding.rvFavorites.visibility = View.GONE
+                    binding.tvFavoriteHided.visibility = View.VISIBLE
+                } else {
+                    val adapter = FavoriteListAdapter(recipeList)
+                    binding.rvFavorites.layoutManager =
+                        GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
+                    binding.rvFavorites.adapter = adapter
+                    adapter.setOnItemClickListener(object :
+                        FavoriteListAdapter.OnItemClickListener {
+                        override fun onItemClick(categoryId: Int) {
+                            openRecipesByRecipesId(categoryId)
+                        }
+                    })
                 }
-            })
+            }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
