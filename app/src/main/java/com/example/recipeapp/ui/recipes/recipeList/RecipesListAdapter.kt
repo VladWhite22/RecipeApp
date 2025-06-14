@@ -10,7 +10,7 @@ import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.ItemRecipeBinding
 
-class RecipesListAdapter(val dataSet: List<Recipe>) :
+class RecipesListAdapter(var dataSet: List<Recipe>) :
     RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
 
     fun interface OnItemClickListener {
@@ -57,6 +57,11 @@ class RecipesListAdapter(val dataSet: List<Recipe>) :
         viewHolder.itemView.setOnClickListener {
             itemClickListener?.onItemClick(recipeId = recipe.id)
         }
+    }
+
+    fun newData(dataSet: List<Recipe>) {
+        this.dataSet = dataSet
+        notifyDataSetChanged()
     }
 
     override fun getItemCount() = dataSet.size

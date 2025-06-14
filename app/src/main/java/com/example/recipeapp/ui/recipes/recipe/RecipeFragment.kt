@@ -83,10 +83,10 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
                     methodsAdapter.newData(it.method)
                     binding.tvFragmentRecipeNumber.text = state.portionsCount.toString()
                 }
+                binding.sbFragmentRecipe.setOnSeekBarChangeListener(PortionSeekBarListener {
+                    viewModel.updateStateOfSeekbar(it)
+                })
             }
-            binding.sbFragmentRecipe.setOnSeekBarChangeListener(PortionSeekBarListener {
-                viewModel.updateStateOfSeekbar(it)
-            })
         }
         val divider = MaterialDividerItemDecoration(
             this.requireContext(), LinearLayoutManager.VERTICAL
@@ -107,12 +107,5 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         super.onDestroyView()
         _binding = null
     }
+
 }
-
-
-
-
-
-
-
-
