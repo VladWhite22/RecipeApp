@@ -20,9 +20,6 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
     val favoriteList: LiveData<FavoriteUIState>
         get() = privateFavoriteList
 
-    init {
-        privateFavoriteList.value = FavoriteUIState()
-    }
 
     fun loadFavorites() {
         return privateLoadFavorites()

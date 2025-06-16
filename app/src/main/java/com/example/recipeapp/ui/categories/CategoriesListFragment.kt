@@ -19,7 +19,7 @@ import com.example.recipeapp.databinding.FragmentListCategoriesBinding
 import com.example.recipeapp.ui.recipes.recipeList.RecipesListFragment
 
 class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
-
+    private var adapter = CategoriesListAdapter(emptyList())
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
         get() = _binding
@@ -67,18 +67,21 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
     }
 
     fun initUi() {
+
         val category = viewModel.returnCategory()
-        val adapter = CategoriesListAdapter(category)
+        adapter = CategoriesListAdapter(category)
         viewModel.categoryState.observe(viewLifecycleOwner) { state ->
             adapter.newData(state.category)
+            binding.rvCategories.layoutManager =
+                GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            binding.rvCategories.adapter = adapter
+            adapter.setOnItemClickListener(object : CategoriesListAdapter.OnItemClickListener {
+                override fun onItemClick(categoryId: Int) {
+                    openRecipesByCategoryId(categoryId)
+                }
+            })
         }
-        binding.rvCategories.layoutManager =
-            GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        binding.rvCategories.adapter = adapter
-        adapter.setOnItemClickListener(object : CategoriesListAdapter.OnItemClickListener {
-            override fun onItemClick(categoryId: Int) {
-                openRecipesByCategoryId(categoryId)
-            }
-        })
+
     }
 }
+

@@ -20,7 +20,8 @@ import kotlin.getValue
 
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
-
+    val viewModel: FavoritesViewModel by viewModels()
+    private lateinit var recipeList: List<Recipe>
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding
@@ -55,9 +56,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun initRecycler() {
-
-        val viewModel: FavoritesViewModel by viewModels()
-        var recipeList: List<Recipe>
         viewModel.loadFavorites()
         viewModel.favoriteList.observe(viewLifecycleOwner) { state ->
             state?.let { uiState ->

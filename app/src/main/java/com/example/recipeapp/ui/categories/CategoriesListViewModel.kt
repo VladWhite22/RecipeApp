@@ -19,13 +19,15 @@ class CategoriesListViewModel(application: Application) :
         get() = privateCategoryState
 
     fun loadCategory() {
-        val category = STUB.getCategories()
-        privateCategoryState.value = privateCategoryState.value?.copy(
-            category = category
-        )
+        val categories = STUB.getCategories()
+        val currentState = categoryState.value ?: CategoriesUIState()
+        val updatedState = currentState.copy(category = categories)
+        privateCategoryState.value = updatedState
     }
 
     fun returnCategory(): List<Category> {
         return categoryState.value?.category ?: emptyList()
     }
 }
+
+

@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.recipeapp.data.STUB
 import com.example.recipeapp.model.Recipe
 
-class RecipesListVIewModel( application: Application) : AndroidViewModel(application) {
+class RecipesListVIewModel(application: Application) : AndroidViewModel(application) {
     data class RecipeListUIState(
         val recipeList: List<Recipe> = listOf(),
         val argCategoryId: Int? = null,
@@ -21,12 +21,10 @@ class RecipesListVIewModel( application: Application) : AndroidViewModel(applica
 
     fun loadRecipe(id: Int) {
         val recipeList = STUB.getRecipesByCategoryId(id)
-        privateRecipeListState.value = RecipeListUIState(
-            recipeList = recipeList,
-        )
+        val currentState = recipeListState.value ?: RecipeListUIState()
+        val updatedState = currentState.copy(recipeList = recipeList)
+        privateRecipeListState.value = updatedState
+
     }
 
-    fun returnList(): List<Recipe> {
-        return recipeListState.value?.recipeList ?: listOf<Recipe>()
-    }
 }

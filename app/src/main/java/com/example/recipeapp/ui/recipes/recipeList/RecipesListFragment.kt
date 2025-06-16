@@ -25,7 +25,7 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
     private var argCategoryId: Int = 0
     private var argCategoryName: String? = null
     private var argCategoryImageUrl: String? = null
-
+    private var adapter = RecipesListAdapter(emptyList())
     private var _binding: FragmentRecipesListBinding? = null
     private val binding
         get() = _binding
@@ -58,30 +58,31 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
     }
 
     fun initUI() {
-        val adapter = RecipesListAdapter(viewModel.returnList())
         viewModel.recipeListState.observe(viewLifecycleOwner) { state ->
             state.recipeList.let { recipes ->
+                adapter = RecipesListAdapter(recipes)
                 adapter.newData(recipes)
-            }
-        }
-        binding.tvBurgersRecipes.text = argCategoryName
-        argCategoryImageUrl?.let { imageUrl ->
-            try {
-                val context = requireContext()
-                val inputStream = context.assets.open(imageUrl)
-                val drawable = Drawable.createFromStream(inputStream, null)
-                binding.ivFragmentRecipeList.setImageDrawable(drawable)
-                inputStream.close()
-            } catch (e: Exception) {
-                Log.e("argCategoryImageUrl", "Failed to load image from assets: $imageUrl")
+                binding.tvBurgersRecipes.text = argCategoryName
+                argCategoryImageUrl?.let { imageUrl ->
+                    try {
+                        val context = requireContext()
+                        val inputStream = context.assets.open(imageUrl)
+                        val drawable = Drawable.createFromStream(inputStream, null)
+                        binding.ivFragmentRecipeList.setImageDrawable(drawable)
+                        inputStream.close()
+                    } catch (e: Exception) {
+                        Log.e("argCategoryImageUrl", "Failed to load image from assets: $imageUrl")
 
-            }
-            binding.rvRecipes.adapter = adapter
-            adapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {
-                override fun onItemClick(recipeId: Int) {
-                    openRecipesByRecipeId(recipeId)
+                    }
+                    binding.rvRecipes.adapter = adapter
+                    adapter.setOnItemClickListener(object : RecipesListAdapter.OnItemClickListener {
+                        override fun onItemClick(recipeId: Int) {
+                            openRecipesByRecipeId(recipeId)
+                        }
+                    })
                 }
-            })
+            }
+
         }
     }
 
