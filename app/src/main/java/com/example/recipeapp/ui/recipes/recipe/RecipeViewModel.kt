@@ -61,20 +61,8 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         return application.getSharedPreferences(FAVORITE_SET_KEY, Context.MODE_PRIVATE)
     }
 
-    fun loadFavorites(): List<Recipe> {
-        return privateLoadFavorites()
-    }
-
     fun updateStateOfSeekbar(newState: Int) {
         privateRecipeState.value = privateRecipeState.value?.copy(portionsCount = newState)
-    }
-
-    private fun privateLoadFavorites(): List<Recipe> {
-        val favoritesPrefs = getFavorites()
-        val favoritesList = favoritesPrefs.getStringSet(FAVORITE_SET_KEY, emptySet())
-            ?.mapNotNull { it.toIntOrNull() }
-            ?.toSet() ?: emptySet()
-        return STUB.getRecipesByIds(favoritesList)
     }
 
     fun onFavoriteClicked() {
