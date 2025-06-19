@@ -6,15 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipeapp.Const
 import com.example.recipeapp.R
 import com.example.recipeapp.data.STUB.getRecipeById
 import com.example.recipeapp.model.Recipe
-import com.example.recipeapp.ui.recipes.recipe.RecipeFragment
 import com.example.recipeapp.databinding.FragmentFavoritesBinding
 import kotlin.getValue
 
@@ -46,13 +44,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         val recipe = getRecipeById(recipeId)
         val bundle = bundleOf(Const.ARG_RECIPE to recipe)
 
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-            addToBackStack(null)
-
-        }
-
+        findNavController().navigate(R.id.recipeFragment, args = bundle)
     }
 
     private fun initRecycler() {
@@ -78,7 +70,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
