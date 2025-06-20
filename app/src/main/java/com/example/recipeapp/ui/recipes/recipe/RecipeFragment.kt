@@ -1,6 +1,5 @@
 package com.example.recipeapp.ui.recipes.recipe
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,19 @@ import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.recipeapp.Const.ARG_RECIPE
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.R
+import com.example.recipeapp.data.STUB.getRecipeById
 import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import kotlin.getValue
 
 class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
     private val viewModel: RecipeViewModel by viewModels()
+    private val args: RecipeFragmentArgs by navArgs()
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -51,11 +53,8 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recipe: Recipe? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
-        } else {
-            requireArguments().getParcelable(ARG_RECIPE)
-        }
+        val recipe: Recipe? = getRecipeById(args.recipeId)
+
         viewModel.loadRecipe(recipe?.id ?: -1)
         initUI()
     }

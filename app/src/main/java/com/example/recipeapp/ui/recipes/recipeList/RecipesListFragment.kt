@@ -7,14 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.recipeapp.Const
-import com.example.recipeapp.Const.ARG_RECIPE
-import com.example.recipeapp.data.STUB.getRecipeById
-import com.example.recipeapp.model.Recipe
+import androidx.navigation.fragment.navArgs
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.FragmentRecipesListBinding
 
@@ -25,6 +21,7 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
     private var argCategoryImageUrl: String? = null
     private var adapter = RecipesListAdapter(emptyList())
     private var _binding: FragmentRecipesListBinding? = null
+    private val args: RecipesListFragmentArgs by navArgs()
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
@@ -48,11 +45,9 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
     }
 
     fun initBundleData() {
-        arguments?.let { args ->
-            argCategoryId = args.getInt(Const.ARG_CATEGORY_ID)
-            argCategoryName = args.getString(Const.ARG_CATEGORY_NAME)
-            argCategoryImageUrl = args.getString(Const.ARG_CATEGORY_IMAGE_URL)
-        }
+        argCategoryId = args.categoryId
+        argCategoryName = args.categoryName
+        argCategoryImageUrl = args.categoryImageUrl
     }
 
     fun initUI() {
@@ -91,10 +86,10 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
 
     fun openRecipesByRecipeId(recipeId: Int) {
 
-        val recipe: Recipe? = getRecipeById(recipeId)
-        val bundle = bundleOf(ARG_RECIPE to recipe)
-
-        findNavController().navigate(R.id.recipeFragment, args = bundle)
+        val direction = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
+            recipeId = recipeId
+        )
+        findNavController().navigate(direction)
     }
 }
 
