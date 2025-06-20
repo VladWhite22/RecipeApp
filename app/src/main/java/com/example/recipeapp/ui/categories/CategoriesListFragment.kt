@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipeapp.Const.ARG_CATEGORY_ID
 import com.example.recipeapp.Const.ARG_CATEGORY_IMAGE_URL
@@ -16,7 +15,6 @@ import com.example.recipeapp.Const.ARG_CATEGORY_NAME
 import com.example.recipeapp.R
 import com.example.recipeapp.categoresList.CategoriesListAdapter
 import com.example.recipeapp.databinding.FragmentListCategoriesBinding
-import com.example.recipeapp.ui.recipes.recipeList.RecipesListFragment
 
 class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
     private var adapter = CategoriesListAdapter(emptyList())
@@ -58,12 +56,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
             ARG_CATEGORY_NAME to categoryTitle,
             ARG_CATEGORY_IMAGE_URL to categoryImageUrl
         )
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
-            addToBackStack(null)
-        }
-
+        findNavController().navigate(R.id.recipesListFragment,args = bundle)
     }
 
     fun initUi() {
