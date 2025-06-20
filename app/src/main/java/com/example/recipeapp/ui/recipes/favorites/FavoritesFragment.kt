@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.recipeapp.Const
 import com.example.recipeapp.R
-import com.example.recipeapp.data.STUB.getRecipeById
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.databinding.FragmentFavoritesBinding
 import kotlin.getValue
@@ -41,10 +39,12 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     fun openRecipesByRecipesId(recipeId: Int) {
-        val recipe = getRecipeById(recipeId)
-        val bundle = bundleOf(Const.ARG_RECIPE to recipe)
 
-        findNavController().navigate(R.id.recipeFragment, args = bundle)
+        val direction: NavDirections =
+            FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment2(
+                recipeId = recipeId,
+            )
+        findNavController().navigate(direction)
     }
 
     private fun initRecycler() {
