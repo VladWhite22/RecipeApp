@@ -16,9 +16,6 @@ import com.example.recipeapp.databinding.FragmentRecipesListBinding
 
 
 class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
-    private var argCategoryId: Int = 0
-    private var argCategoryName: String? = null
-    private var argCategoryImageUrl: String? = null
     private var adapter = RecipesListAdapter(emptyList())
     private var _binding: FragmentRecipesListBinding? = null
     private val args: RecipesListFragmentArgs by navArgs()
@@ -39,24 +36,18 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBundleData()
-        viewModel.loadRecipe(argCategoryId)
+        viewModel.loadRecipe(args.category.id )
         initUI()
     }
 
-    fun initBundleData() {
-        argCategoryId = args.categoryId
-        argCategoryName = args.categoryName
-        argCategoryImageUrl = args.categoryImageUrl
-    }
 
     fun initUI() {
         viewModel.recipeListState.observe(viewLifecycleOwner) { state ->
             state.recipeList.let { recipes ->
                 adapter = RecipesListAdapter(recipes)
                 adapter.newData(recipes)
-                binding.tvBurgersRecipes.text = argCategoryName
-                argCategoryImageUrl?.let { imageUrl ->
+                binding.tvBurgersRecipes.text = args.category.title
+                args.category.imageUrl.let { imageUrl ->
                     try {
                         val context = requireContext()
                         val inputStream = context.assets.open(imageUrl)

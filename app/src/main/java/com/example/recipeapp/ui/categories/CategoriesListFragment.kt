@@ -42,15 +42,12 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
     }
 
     fun openRecipesByCategoryId(categoryId: Int) {
-
         val idCategory = viewModel.returnCategory().find { it.id == categoryId }
-        val categoryTitle = idCategory?.title ?:"empty"
-        val categoryImageUrl = idCategory?.imageUrl ?:"empty"
-
-        val direction = CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
-            categoryId = categoryId,
-            categoryName = categoryTitle,
-            categoryImageUrl = categoryImageUrl,)
+            ?: throw IllegalArgumentException("Category with id $categoryId not found")
+        val direction =
+            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                category = idCategory,
+            )
         findNavController().navigate(direction)
     }
 
