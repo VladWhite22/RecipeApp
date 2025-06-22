@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.recipeapp.Const.ARG_CATEGORY_ID
-import com.example.recipeapp.Const.ARG_CATEGORY_IMAGE_URL
-import com.example.recipeapp.Const.ARG_CATEGORY_NAME
 import com.example.recipeapp.R
 import com.example.recipeapp.categoresList.CategoriesListAdapter
 import com.example.recipeapp.databinding.FragmentListCategoriesBinding
@@ -48,15 +44,14 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
     fun openRecipesByCategoryId(categoryId: Int) {
 
         val idCategory = viewModel.returnCategory().find { it.id == categoryId }
-        val categoryTitle = idCategory?.title
-        val categoryImageUrl = idCategory?.imageUrl
+        val categoryTitle = idCategory?.title ?:"empty"
+        val categoryImageUrl = idCategory?.imageUrl ?:"empty"
 
-        val bundle = bundleOf(
-            ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to categoryTitle,
-            ARG_CATEGORY_IMAGE_URL to categoryImageUrl
-        )
-        findNavController().navigate(R.id.recipesListFragment,args = bundle)
+        val direction = CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+            categoryId = categoryId,
+            categoryName = categoryTitle,
+            categoryImageUrl = categoryImageUrl,)
+        findNavController().navigate(direction)
     }
 
     fun initUi() {
@@ -77,4 +72,6 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
 
     }
 }
+
+
 
