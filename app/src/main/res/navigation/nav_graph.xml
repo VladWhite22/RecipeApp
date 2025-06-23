@@ -13,7 +13,11 @@
         tools:layout="@layout/fragment_list_categories">
         <action
             android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
-            app:destination="@id/recipesListFragment" />
+            app:destination="@id/recipesListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -25,7 +29,11 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_favoritesFragment_to_recipeFragment2"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/recipeFragment"
@@ -42,19 +50,16 @@
         android:label="RecipesListFragment"
         tools:layout="@layout/fragment_recipes_list">
         <argument
-            android:name="categoryId"
-            app:argType="integer" />
-        <argument
-            android:name="categoryName"
-            android:defaultValue=""
-            app:argType="string" />
-        <argument
-            android:name="categoryImageUrl"
-            android:defaultValue=""
-            app:argType="string" />
+            android:name="category"
+            app:argType="com.example.recipeapp.model.Category"
+            />
         <action
             android:id="@+id/action_recipesListFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 
 </navigation>
