@@ -15,10 +15,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val currentThread = Thread.currentThread().name
+        Log.i("!!", "currentThread:${currentThread}")
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         binding.btmCategoryButton.setOnClickListener {
             findNavController(R.id.mainContainer).navigate(R.id.categoriesListFragment)
         }
@@ -28,19 +29,21 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val thread = Thread{
+        val thread = Thread {
             val url = URL("https://recipes.androidsprint.ru/api/category")
             val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
             connection.connect()
-            val listCategory = connection.inputStream.bufferedReader().readText().substringAfter("Body").trim()
-            var category=Json.decodeFromString<List<Category>>(listCategory)
-            Log.i("!!","Ready to use:${category}")
+            val listCategory =
+                connection.inputStream.bufferedReader().readText().substringAfter("Body").trim()
+            var category = Json.decodeFromString<List<Category>>(listCategory)
+            val currentThread = Thread.currentThread().name
+            Log.i("!!", "currentThread:${currentThread}")
+            Log.i("!!", "Ready to use:${category}")
 
         }
         thread.start()
 
     }
-
 
 
 }
