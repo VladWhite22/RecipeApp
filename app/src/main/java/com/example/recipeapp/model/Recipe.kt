@@ -3,7 +3,9 @@ package com.example.recipeapp.model
 import android.os.Parcelable
 import com.example.aseducationalproject.Domain.Ingredient
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Parcelize
 class Recipe (
     val id: Int,
