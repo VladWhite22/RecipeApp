@@ -10,6 +10,7 @@ import com.example.recipeapp.model.Recipe
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
@@ -56,8 +57,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun categoryRequest(callback: (List<Category>) -> Unit) {
+
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
         var categories: List<Category>? = null
-        val client: OkHttpClient = OkHttpClient()
         val request: Request = Request.Builder()
             .url("https://recipes.androidsprint.ru/api/category")
             .build()
@@ -77,9 +85,15 @@ class MainActivity : AppCompatActivity() {
         val recipeList = Collections.synchronizedList(mutableListOf<Recipe>())
         var counter = CountDownLatch(listInt.size)
 
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
         listInt.forEach { listInt ->
             threadPool.submit {
-                val client: OkHttpClient = OkHttpClient()
                 val request: Request = Request.Builder()
                     .url("https://recipes.androidsprint.ru/api/category/$listInt/recipes")
                     .build()
