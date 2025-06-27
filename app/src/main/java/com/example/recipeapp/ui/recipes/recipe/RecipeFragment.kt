@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.R
-import com.example.recipeapp.data.STUB.getRecipeById
 import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlin.getValue
@@ -53,9 +51,8 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recipe: Recipe? = getRecipeById(args.recipeId)
 
-        viewModel.loadRecipe(recipe?.id ?: -1)
+        viewModel.loadRecipe(args.recipeId)
         initUI()
     }
 

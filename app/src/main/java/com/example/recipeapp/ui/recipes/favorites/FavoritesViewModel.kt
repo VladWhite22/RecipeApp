@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.recipeapp.FAVORITE_SET_KEY
-import com.example.recipeapp.data.STUB
+import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.model.Recipe
 
 class FavoritesViewModel(private val application: Application) : AndroidViewModel(application) {
@@ -15,6 +15,8 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
     data class FavoriteUIState(
         val favoriteList: List<Recipe> = listOf()
     )
+
+    private val recipeRepository = RecipeRepository()
 
     private val privateFavoriteList = MutableLiveData(FavoriteUIState())
     val favoriteList: LiveData<FavoriteUIState>
@@ -30,8 +32,12 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
         val favoritesList = favoritesPrefs.getStringSet(FAVORITE_SET_KEY, emptySet())
             ?.mapNotNull { it.toIntOrNull() }
             ?.toSet() ?: emptySet()
-        val favorites = STUB.getRecipesByIds(favoritesList)
-        privateFavoriteList.value = FavoriteUIState(favoriteList = favorites)
+        recipeRepository.getRecipesByCategoryIds(favoritesList) { recipeList ->
+            val favorites = recipeList ?: emptyList<Recipe>()
+            privateFavoriteList.value = FavoriteUIState(favoriteList = favorites)
+        }
+
+
     }
 
     private fun getFavorites(): SharedPreferences {

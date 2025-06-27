@@ -56,7 +56,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         val category = viewModel.returnCategory()
         adapter = CategoriesListAdapter(category)
         viewModel.categoryState.observe(viewLifecycleOwner) { state ->
-            adapter.newData(state.category)
+            adapter.newData(state.category )
             binding.rvCategories.layoutManager =
                 GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
             binding.rvCategories.adapter = adapter
