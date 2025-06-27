@@ -7,69 +7,46 @@ import com.example.recipeapp.databinding.ActivityMainBinding
 import androidx.navigation.findNavController
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.Recipe
-import java.net.HttpURLConnection
-import java.net.URL
 import kotlinx.serialization.json.Json
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
+import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     private val threadPool = Executors.newFixedThreadPool(10)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val mainThread = Thread.currentThread().name
-        Log.i("!!", "currentThread:${mainThread}")
         val thread = Thread {
             try {
-                val url = URL("https://recipes.androidsprint.ru/api/category")
-                val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                connection.connect()
-                val listCategory =
-                    connection.inputStream.bufferedReader().readText().substringAfter("Body").trim()
-                val category = Json.decodeFromString<List<Category>>(listCategory)
-                val currentThread = Thread.currentThread().name
-                Log.i("!!", "currentThread:${currentThread}")
-                Log.i("!!", "Ready to use:${category}")
+                var categories: List<Category> = emptyList()
+                var recipeList: List<Recipe> = emptyList()
 
-                val categoryId = category.map { it.id }
-                Log.i("!!", "categoryId:${categoryId}")
-                val recipeList: MutableList<Recipe> = mutableListOf()
-                var counter = CountDownLatch(categoryId.size)
-                categoryId.forEach { categoryId ->
-                    threadPool.submit {
-                        val mainThread = Thread.currentThread().name
-                        Log.i("!!", "currentThread:${mainThread}")
+                categoryRequest { result -> categories = result }
 
-                        val idURL =
-                            URL("https://recipes.androidsprint.ru/api/category/$categoryId/recipes")
-                        val connected = idURL.openConnection() as HttpURLConnection
-                        connected.connect()
-                        connected.connectTimeout = 5000
-                        connected.readTimeout = 5000
-                        val serverAnswer = connected.inputStream.bufferedReader().readText()
-                        Log.i("!!", "serverAnswer:${serverAnswer}")
-                        var newRecipes = Json.decodeFromString<List<Recipe>>(serverAnswer)
-                        recipeList.addAll(newRecipes)
-                        counter.countDown()
-                    }
+                val categoryId = categories.map { it.id }
+                recipeListRequest(categoryId) { result -> recipeList = result }
+
+                Log.d("!!", "categories: $categories")
+                Log.d("!!", "recipeList: $recipeList")
+                for (recipe in recipeList)
+                {
+                    Log.d("!!", "recipeList${recipe.id}: ${recipe.title}")
                 }
-                counter.await()
-                Log.i("!!", "конечный:${recipeList}")
-                for (recipe in recipeList) {
-                    Log.i("!!", "ID: ${recipe.id}, Title: ${recipe.title}")
-                }
+
             } catch (e: Exception) {
                 Log.d("Server Error", "something goes wrong")
             }
         }
         thread.start()
+
         binding.btmCategoryButton.setOnClickListener {
             findNavController(R.id.mainContainer).navigate(R.id.categoriesListFragment)
         }
@@ -78,4 +55,67 @@ class MainActivity : AppCompatActivity() {
             findNavController(R.id.mainContainer).navigate(R.id.favoritesFragment)
         }
     }
+
+    fun categoryRequest(callback: (List<Category>) -> Unit) {
+
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
+        var categories: List<Category>? = null
+        val request: Request = Request.Builder()
+            .url("https://recipes.androidsprint.ru/api/category")
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            val httpCategoryResponce = response.body?.string()
+            Log.i("!!", "HttpCategoryResponce:${httpCategoryResponce}")
+            if (httpCategoryResponce != null) {
+                categories = Json.decodeFromString<List<Category>>(httpCategoryResponce)
+                Log.d("!!", "Thread.currentThread: ${Thread.currentThread().name}")
+                callback(categories)
+            }
+        }
+    }
+
+    fun recipeListRequest(listInt: List<Int>, callback: (List<Recipe>) -> Unit) {
+        val recipeList = Collections.synchronizedList(mutableListOf<Recipe>())
+        var counter = CountDownLatch(listInt.size)
+
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
+        listInt.forEach { listInt ->
+            threadPool.submit {
+                val request: Request = Request.Builder()
+                    .url("https://recipes.androidsprint.ru/api/category/$listInt/recipes")
+                    .build()
+                client.newCall(request).execute().use { responce ->
+                    Log.d("!!", "Thread.currentThread: ${Thread.currentThread().name}")
+                    val httpRecipeList = responce.body?.string()
+                    if (httpRecipeList != null) {
+                        val recipes = Json.decodeFromString<List<Recipe>>(httpRecipeList)
+                        recipeList.addAll(recipes)
+                        counter.countDown()
+                    }
+                }
+            }
+
+        }
+        counter.await()
+        callback(recipeList)
+    }
+
 }
+
+
+
+
+
