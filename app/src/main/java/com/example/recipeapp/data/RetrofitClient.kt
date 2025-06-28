@@ -34,9 +34,6 @@ object RetrofitClient {
             .build()
         val json = Json {
             ignoreUnknownKeys = true
-            coerceInputValues = true
-            isLenient = true
-            explicitNulls = false
         }
         Retrofit.Builder()
             .baseUrl(BASE_URL)

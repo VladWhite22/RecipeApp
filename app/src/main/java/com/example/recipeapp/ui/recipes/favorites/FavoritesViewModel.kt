@@ -13,7 +13,7 @@ import com.example.recipeapp.model.Recipe
 class FavoritesViewModel(private val application: Application) : AndroidViewModel(application) {
 
     data class FavoriteUIState(
-        val favoriteList: List<Recipe> = listOf()
+        val favoriteList: List<Recipe>? = listOf()
     )
 
     private val recipeRepository = RecipeRepository()
@@ -32,11 +32,14 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
         val favoritesList = favoritesPrefs.getStringSet(FAVORITE_SET_KEY, emptySet())
             ?.mapNotNull { it.toIntOrNull() }
             ?.toSet() ?: emptySet()
-        recipeRepository.getRecipesByCategoryIds(favoritesList) { recipeList ->
-            val favorites = recipeList ?: emptyList<Recipe>()
-            privateFavoriteList.value = FavoriteUIState(favoriteList = favorites)
-        }
 
+        recipeRepository.getRecipesByCategoryIds(favoritesList) { recipeList ->
+            privateFavoriteList.postValue(
+                (favoriteList.value ?: FavoriteUIState()).copy(
+                favoriteList = recipeList
+                )
+            )
+        }
 
     }
 

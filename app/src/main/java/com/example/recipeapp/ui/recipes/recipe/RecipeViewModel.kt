@@ -46,11 +46,12 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                 Log.d("RecipeViewModel", "Image not found: ${recipeState.value?.recipe?.imageUrl}")
                 null
             }
-
-            privateRecipeState.value = RecipeUIState(
-                recipe = recipe,
-                isFavorite = isFavorite,
-                recipeImage = image
+            privateRecipeState.postValue(
+                (recipeState.value ?: RecipeUIState()).copy(
+                    recipe = recipe,
+                    isFavorite = isFavorite,
+                    recipeImage = image
+                )
             )
             Log.d("RecipeViewModel", "privateRecipeState.value:${privateRecipeState.value}")
         }

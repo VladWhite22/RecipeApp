@@ -17,6 +17,7 @@ import kotlin.getValue
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     val viewModel: FavoritesViewModel by viewModels()
+    val adapter = FavoriteListAdapter(emptyList<Recipe>())
     private lateinit var recipeList: List<Recipe>
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
@@ -36,6 +37,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
+        initUI()
     }
 
     fun openRecipesByRecipesId(recipeId: Int) {
@@ -47,28 +49,16 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         findNavController().navigate(direction)
     }
 
-    private fun initRecycler() {
-        viewModel.loadFavorites()
-        viewModel.favoriteList.observe(viewLifecycleOwner) { state ->
-            state?.let { uiState ->
-                recipeList = uiState.favoriteList
-                if (recipeList.isEmpty()) {
-                    binding.rvFavorites.visibility = View.GONE
-                    binding.tvFavoriteHided.visibility = View.VISIBLE
-                } else {
-                    val adapter = FavoriteListAdapter(recipeList)
-                    binding.rvFavorites.layoutManager =
-                        GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
-                    binding.rvFavorites.adapter = adapter
-                    adapter.setOnItemClickListener(object :
-                        FavoriteListAdapter.OnItemClickListener {
-                        override fun onItemClick(categoryId: Int) {
-                            openRecipesByRecipesId(categoryId)
-                        }
-                    })
-                }
+    fun initRecycler() {
+        binding.rvFavorites.layoutManager =
+            GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
+        binding.rvFavorites.adapter = adapter
+        adapter.setOnItemClickListener(object :
+            FavoriteListAdapter.OnItemClickListener {
+            override fun onItemClick(categoryId: Int) {
+                openRecipesByRecipesId(categoryId)
             }
-        }
+        })
     }
 
     override fun onDestroyView() {
@@ -76,5 +66,19 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         _binding = null
     }
 
+    private fun initUI() {
+        viewModel.loadFavorites()
+        viewModel.favoriteList.observe(viewLifecycleOwner) { state ->
+            state?.let { uiState ->
+                recipeList = uiState.favoriteList!!
+                adapter.newData(recipeList)
+                updateVisibility(recipeList.isNotEmpty())
+            }
+        }
+    }
 
+    private fun updateVisibility(hasRecipes: Boolean) {
+        binding.rvFavorites.visibility = if (hasRecipes) View.VISIBLE else View.GONE
+        binding.tvFavoriteHided.visibility = if (hasRecipes) View.GONE else View.VISIBLE
+    }
 }

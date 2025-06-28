@@ -49,14 +49,9 @@ class RecipeRepository {
     fun getRecipeById(id: Int, callback: (Recipe?) -> Unit) {
         executorService.execute {
             try {
-                val response = RetrofitClient.apiService.getRecipesById(id).execute()
-                val result = if (response.isSuccessful) {
-                    response.body()
-                } else {
-                    null
-                }
-                callback(result)
-                Log.d("!!", "getRecipeById $result")
+                val response = RetrofitClient.apiService.getRecipesById(id).execute().body()
+                callback(response)
+                Log.d("!!", "getRecipeById $response")
             } catch (e: Exception) {
                 Log.e("!!", "getRecipeById Error")
             }

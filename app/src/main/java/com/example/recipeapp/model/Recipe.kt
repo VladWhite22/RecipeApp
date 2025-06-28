@@ -8,9 +8,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Parcelize
 data class Recipe(
-    val id: Int = 0,
-    val title: String = "",
-    val ingredients: List<Ingredient> = emptyList(),
-    val method: List<String> = emptyList(),
-    val imageUrl: String = ""
+    val id: Int,
+    val title: String,
+    val ingredients: List<Ingredient>,
+    val method: List<String>,
+    val imageUrl: String
 ): Parcelable
