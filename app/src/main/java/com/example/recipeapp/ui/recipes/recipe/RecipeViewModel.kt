@@ -9,9 +9,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.recipeapp.FAVORITE_SET_KEY
-import com.example.recipeapp.data.STUB
 import com.example.recipeapp.model.Recipe
 import androidx.core.content.edit
+import com.example.recipeapp.data.RecipeRepository
 
 class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
     data class RecipeUIState(
@@ -21,41 +21,42 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val recipeImage: Drawable? = null,
     )
 
+    private val recipeRepository = RecipeRepository()
     private val privateRecipeState = MutableLiveData(RecipeUIState())
     val recipeState: LiveData<RecipeUIState>
         get() = privateRecipeState
 
-    init {
-        Log.d("RecipeViewModel", "isFavorite передано")
-        privateRecipeState.value = RecipeUIState(isFavorite = true)
-    }
 
     fun loadRecipe(id: Int) {
         if (id == -1) {
             Log.d("RecipeViewModel", "id == -1, download nothing  ")
             return
         }
-        val recipe = STUB.getRecipeById(id)
-        val favorites =
-            getFavorites().getStringSet(FAVORITE_SET_KEY, mutableSetOf()) ?: mutableSetOf()
-        val isFavorite = favorites.contains(id.toString())
-        val image: Drawable? = try {
-            Drawable.createFromStream(
-                this.application.assets?.open(recipe?.imageUrl ?: ""),
-                null
-            )
-        } catch (e: Exception) {
-            Log.d("RecipeViewModel", "Image not found: ${recipeState.value?.recipe?.imageUrl}")
-            null
-        }
+        recipeRepository.getRecipeById(id) { recipe ->
 
-        privateRecipeState.value = RecipeUIState(
-            recipe = recipe,
-            isFavorite = isFavorite,
-            recipeImage = image
-        )
-        Log.d("RecipeViewModel", "privateRecipeState.value:${privateRecipeState.value}")
+            val favorites =
+                getFavorites().getStringSet(FAVORITE_SET_KEY, mutableSetOf()) ?: mutableSetOf()
+            val isFavorite = favorites.contains(id.toString())
+            val image: Drawable? = try {
+                Drawable.createFromStream(
+                    this.application.assets?.open(recipe?.imageUrl ?: ""),
+                    null
+                )
+            } catch (e: Exception) {
+                Log.d("RecipeViewModel", "Image not found: ${recipeState.value?.recipe?.imageUrl}")
+                null
+            }
+            privateRecipeState.postValue(
+                (recipeState.value ?: RecipeUIState()).copy(
+                    recipe = recipe,
+                    isFavorite = isFavorite,
+                    recipeImage = image
+                )
+            )
+            Log.d("RecipeViewModel", "privateRecipeState.value:${privateRecipeState.value}")
+        }
     }
+
 
     private fun getFavorites(): SharedPreferences {
         return application.getSharedPreferences(FAVORITE_SET_KEY, Context.MODE_PRIVATE)

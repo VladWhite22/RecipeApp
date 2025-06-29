@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.recipeapp.data.STUB
+import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.model.Category
 
 class CategoriesListViewModel(application: Application) :
@@ -14,15 +14,20 @@ class CategoriesListViewModel(application: Application) :
         val category: List<Category> = listOf()
     )
 
+    private val recipeRepository = RecipeRepository()
+
     private val privateCategoryState = MutableLiveData(CategoriesUIState())
     val categoryState: LiveData<CategoriesUIState>
         get() = privateCategoryState
 
     fun loadCategory() {
-        val categories = STUB.getCategories()
-        val currentState = categoryState.value ?: CategoriesUIState()
-        val updatedState = currentState.copy(category = categories)
-        privateCategoryState.value = updatedState
+        recipeRepository.getCategories { categories ->
+            privateCategoryState.postValue(
+                 (categoryState.value ?: CategoriesUIState()).copy(
+                    category = categories
+                )
+            )
+        }
     }
 
     fun returnCategory(): List<Category> {

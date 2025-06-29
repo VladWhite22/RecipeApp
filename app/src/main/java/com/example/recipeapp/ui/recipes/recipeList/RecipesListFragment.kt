@@ -44,8 +44,15 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
     fun initUI() {
         viewModel.recipeListState.observe(viewLifecycleOwner) { state ->
             state.recipeList.let { recipes ->
-                adapter = RecipesListAdapter(recipes)
-                adapter.newData(recipes)
+                if (binding.rvRecipes.adapter == null) {
+                    adapter = RecipesListAdapter(recipes)
+                    binding.rvRecipes.adapter = adapter
+                    adapter.setOnItemClickListener { recipeId ->
+                        openRecipesByRecipeId(recipeId)
+                    }
+                } else {
+                    adapter.newData(recipes)
+                }
                 binding.tvBurgersRecipes.text = args.category.title
                 args.category.imageUrl.let { imageUrl ->
                     try {
@@ -55,7 +62,7 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
                         binding.ivFragmentRecipeList.setImageDrawable(drawable)
                         inputStream.close()
                     } catch (e: Exception) {
-                        Log.e("argCategoryImageUrl", "Failed to load image from assets: $imageUrl")
+                        Log.e("!!", "Failed to load image from assets: $imageUrl")
 
                     }
                     binding.rvRecipes.adapter = adapter
