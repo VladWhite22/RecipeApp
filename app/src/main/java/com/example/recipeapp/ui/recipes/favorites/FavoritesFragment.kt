@@ -18,7 +18,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     val viewModel: FavoritesViewModel by viewModels()
     val adapter = FavoriteListAdapter(emptyList<Recipe>())
-    private lateinit var recipeList: List<Recipe>
+    private var recipeList: List<Recipe> = emptyList()
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding

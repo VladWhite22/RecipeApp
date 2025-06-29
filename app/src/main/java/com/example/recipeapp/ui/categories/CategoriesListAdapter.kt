@@ -1,6 +1,5 @@
 package com.example.recipeapp.categoresList
 
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.ItemCategoryBinding
 import com.example.recipeapp.model.Category
+import com.bumptech.glide.Glide
+import com.example.recipeapp.IMAGE_BASE_URL
 
 class CategoriesListAdapter(var dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
@@ -26,19 +27,15 @@ class CategoriesListAdapter(var dataSet: List<Category>) :
         fun bind(category: Category) {
             binding.tvCategoryName.text = category.title
             binding.tvCategoryDescription.text = category.description
-
             try {
-                val drawable = Drawable.createFromStream(
-                    itemView.context.assets.open(category.imageUrl),
-                    null
-                )
-                binding.ivCategory.setImageDrawable(drawable)
-                binding.ivCategory.contentDescription = String.format(
-                    itemView.context.getString(R.string.category_image_content_description),
-                    category.title
-                )
+                Glide.with(itemView.context)
+                    .load(IMAGE_BASE_URL + category.imageUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.img_placeholder)
+                    .error(R.drawable.img_error)
+                    .into(binding.ivCategory)
             } catch (e: Exception) {
-                Log.e("CategoriesListAdapter", "Ошибка загрузки изображения: ${category.title}", e)
+                Log.e("!!", "Ошибка загрузки изображения: ${category.title}")
             }
         }
     }
@@ -57,9 +54,11 @@ class CategoriesListAdapter(var dataSet: List<Category>) :
             itemClickListener?.onItemClick(categoryId = category.id)
         }
     }
+
     fun newData(dataSet: List<Category>) {
         this.dataSet = dataSet
         notifyDataSetChanged()
     }
+
     override fun getItemCount() = dataSet.size
 }
