@@ -1,11 +1,12 @@
 package com.example.recipeapp.ui.recipes.favorites
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.recipeapp.IMAGE_BASE_URL
 import com.example.recipeapp.R
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.databinding.ItemRecipeBinding
@@ -27,13 +28,13 @@ class FavoriteListAdapter(var dataSet: List<Recipe>) :
         @SuppressLint("StringFormatInvalid")
         fun bind(recipe: Recipe) {
             binding.tvRecipeName.text = recipe.title
-
             try {
-                val drawable = Drawable.createFromStream(
-                    itemView.context.assets.open(recipe.imageUrl),
-                    null
-                )
-                binding.ivRecipe.setImageDrawable(drawable)
+                Glide.with(itemView.context)
+                    .load(IMAGE_BASE_URL+recipe.imageUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.img_placeholder)
+                    .error(R.drawable.img_error)
+                    .into(binding.ivRecipe)
                 binding.ivRecipe.contentDescription = String.format(
                     itemView.context.getString(R.string.recipe_image_description),
                     recipe.title
