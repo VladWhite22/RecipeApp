@@ -3,7 +3,6 @@ package com.example.recipeapp.ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -18,7 +17,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val recipe: Recipe? = null,
         val isFavorite: Boolean = false,
         val portionsCount: Int = 1,
-        val recipeImage: Drawable? = null,
+
     )
 
     private val recipeRepository = RecipeRepository()
@@ -37,20 +36,11 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
             val favorites =
                 getFavorites().getStringSet(FAVORITE_SET_KEY, mutableSetOf()) ?: mutableSetOf()
             val isFavorite = favorites.contains(id.toString())
-            val image: Drawable? = try {
-                Drawable.createFromStream(
-                    this.application.assets?.open(recipe?.imageUrl ?: ""),
-                    null
-                )
-            } catch (e: Exception) {
-                Log.d("RecipeViewModel", "Image not found: ${recipeState.value?.recipe?.imageUrl}")
-                null
-            }
             privateRecipeState.postValue(
                 (recipeState.value ?: RecipeUIState()).copy(
                     recipe = recipe,
                     isFavorite = isFavorite,
-                    recipeImage = image
+
                 )
             )
             Log.d("RecipeViewModel", "privateRecipeState.value:${privateRecipeState.value}")

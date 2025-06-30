@@ -1,6 +1,7 @@
 package com.example.recipeapp.ui.recipes.recipe
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.example.recipeapp.IMAGE_BASE_URL
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -71,7 +74,14 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
                 binding.ibFavorite.setOnClickListener {
                     viewModel.onFavoriteClicked()
                 }
-                binding.ivRecipe.setImageDrawable(viewModel.recipeState.value?.recipeImage)
+                Glide.with(this@RecipeFragment)
+                    .load(IMAGE_BASE_URL+viewModel.recipeState.value?.recipe?.imageUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.img_placeholder)
+                    .error(R.drawable.img_error)
+                    .into(binding.ivRecipe)
+                Log.e("!!", "Ошибка загрузки изображения: ${IMAGE_BASE_URL+viewModel.recipeState.value?.recipe?.imageUrl}")
+                //binding.ivRecipe.setImageDrawable(viewModel.recipeState.value?.recipeImage)
 
                 state.recipe?.let {
                     ingredientsAdapter.updateIngredients(state.portionsCount.toDouble())
