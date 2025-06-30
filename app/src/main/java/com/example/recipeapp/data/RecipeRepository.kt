@@ -1,35 +1,29 @@
 package com.example.recipeapp.data
 
-import android.util.Log
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.Recipe
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import com.example.recipeapp.model.RequestResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RecipeRepository {
 
-    private val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-
-    fun getCategories(callback: (List<Category>) -> Unit) {
-        executorService.execute {
-            try {
-                val response = RetrofitClient.apiService.getCategories().execute()
-                val result = if (response.isSuccessful) {
-                    response.body()?.toList() ?: emptyList()
-                } else {
-                    emptyList()
-                }
-                callback(result)
-                Log.d("!!", "getCategories $result")
-            } catch (e: Exception) {
-                Log.e("!!", "getCategories Error")
-
+    suspend fun getCategories(): RequestResult<List<Category>> = withContext(Dispatchers.IO) {
+        try {
+            val response = RetrofitClient.apiService.getCategories().execute()
+            val categories = if (response.isSuccessful) {
+                response.body()?.toList() ?: emptyList()
+            } else {
+                emptyList()
             }
+            RequestResult.Success(categories)
+        } catch (e: Exception) {
+            RequestResult.Error(e)
         }
     }
 
-    fun getRecipesByCategoryId(categoryId: Int, callback: (List<Recipe>) -> Unit) {
-        executorService.execute {
+    suspend fun getRecipesByCategoryId(categoryId: Int): RequestResult<List<Recipe>> =
+        withContext(Dispatchers.IO) {
             try {
                 val response =
                     RetrofitClient.apiService.getRecipesByCategoryId(categoryId).execute()
@@ -38,43 +32,46 @@ class RecipeRepository {
                 } else {
                     emptyList()
                 }
-                callback(result)
-                Log.d("!!", "getRecipesByCategoryId $result")
+                RequestResult.Success(result)
             } catch (e: Exception) {
-                Log.e("!!", "getRecipesByCategoryId Error")
+                RequestResult.Error(e)
             }
+        }
+
+    suspend fun getRecipeById(id: Int): RequestResult<Recipe> = withContext(Dispatchers.IO) {
+        try {
+            val response = RetrofitClient.apiService.getRecipesById(id).execute()
+            val recipe = response.body()
+            if (recipe != null) {
+                RequestResult.Success(recipe)
+            } else {
+                RequestResult.Error(Exception("Recipe not found (null response)"))
+            }
+        } catch (e: Exception) {
+            RequestResult.Error(e)
         }
     }
 
-    fun getRecipeById(id: Int, callback: (Recipe?) -> Unit) {
-        executorService.execute {
-            try {
-                val response = RetrofitClient.apiService.getRecipesById(id).execute().body()
-                callback(response)
-                Log.d("!!", "getRecipeById $response")
-            } catch (e: Exception) {
-                Log.e("!!", "getRecipeById Error")
-            }
-        }
-    }
-
-    fun getRecipesByCategoryIds(setInt: Set<Int>, callback: (List<Recipe>?) -> Unit) {
-        executorService.execute {
+    suspend fun getRecipesByCategoryIds(setInt: Set<Int>): RequestResult<List<Recipe>> =
+        withContext(
+            Dispatchers.IO
+        ) {
             try {
                 val response =
-                    RetrofitClient.apiService.getRecipesByIds(setInt.joinToString(",")).execute()
-                val result = if (response.isSuccessful) {
-                    response.body()
+                    RetrofitClient.apiService.getRecipesByIds(setInt.joinToString(","))
+                        .execute()
+                val list = response.body()
+                if (list != null) {
+                    RequestResult.Success(list)
                 } else {
-                    null
+                    RequestResult.Error(Exception("Recipe not found (null response)"))
                 }
-                callback(result)
             } catch (e: Exception) {
-                Log.e("!!", "getRecipesByCategoryIds Error")
+                RequestResult.Error(e)
             }
         }
-    }
-
 }
+
+
 
 

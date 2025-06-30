@@ -81,8 +81,6 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
                     .error(R.drawable.img_error)
                     .into(binding.ivRecipe)
                 Log.e("!!", "Ошибка загрузки изображения: ${IMAGE_BASE_URL+viewModel.recipeState.value?.recipe?.imageUrl}")
-                //binding.ivRecipe.setImageDrawable(viewModel.recipeState.value?.recipeImage)
-
                 state.recipe?.let {
                     ingredientsAdapter.updateIngredients(state.portionsCount.toDouble())
                     ingredientsAdapter.newData(it.ingredients)
