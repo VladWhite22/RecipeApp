@@ -56,12 +56,6 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         val category = viewModel.returnCategory()
         adapter = CategoriesListAdapter(category)
         viewModel.categoryState.observe(viewLifecycleOwner) { state ->
-//            Glide.with(this@CategoriesListFragment)
-//                .load(IMAGE_BASE_URL + category)
-//                .centerCrop()
-//                .placeholder(R.drawable.img_placeholder)
-//                .error(R.drawable.img_error)
-//                .into(binding.ivCategory)
             adapter.newData(state.category )
             binding.rvCategories.layoutManager =
                 GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
