@@ -1,11 +1,15 @@
 package com.example.recipeapp.ui.recipes.recipeList
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.model.Recipe
+import com.example.recipeapp.model.RequestResult
+import kotlinx.coroutines.launch
 
 class RecipesListVIewModel(application: Application) : AndroidViewModel(application) {
     data class RecipeListUIState(
@@ -19,13 +23,17 @@ class RecipesListVIewModel(application: Application) : AndroidViewModel(applicat
         get() = privateRecipeListState
 
     fun loadRecipe(id: Int) {
+        viewModelScope.launch {
+            val result = recipeRepository.getRecipesByCategoryId(id)
 
-        recipeRepository.getRecipesByCategoryId(id) { callback ->
-            privateRecipeListState.postValue(
-                (recipeListState.value ?: RecipeListUIState()).copy(
-                    recipeList = callback
-                )
-            )
+            when (result) {
+                is RequestResult.Success<List<Recipe>> -> {
+                    privateRecipeListState.value = RecipeListUIState(
+                        recipeList = result.data
+                    )
+                }
+                is RequestResult.Error -> Log.d("!!", "loadRecipe $result")
+            }
         }
     }
 }

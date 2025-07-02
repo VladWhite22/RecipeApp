@@ -10,7 +10,10 @@ import androidx.lifecycle.MutableLiveData
 import com.example.recipeapp.FAVORITE_SET_KEY
 import com.example.recipeapp.model.Recipe
 import androidx.core.content.edit
+import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
+import com.example.recipeapp.model.RequestResult
+import kotlinx.coroutines.launch
 
 class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
     data class RecipeUIState(
@@ -18,7 +21,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val isFavorite: Boolean = false,
         val portionsCount: Int = 1,
 
-    )
+        )
 
     private val recipeRepository = RecipeRepository()
     private val privateRecipeState = MutableLiveData(RecipeUIState())
@@ -27,23 +30,25 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
 
     fun loadRecipe(id: Int) {
-        if (id == -1) {
-            Log.d("RecipeViewModel", "id == -1, download nothing  ")
-            return
-        }
-        recipeRepository.getRecipeById(id) { recipe ->
-
+        viewModelScope.launch {
+            if (id == -1) {
+                Log.d("RecipeViewModel", "id == -1, download nothing  ")
+                return@launch
+            }
             val favorites =
                 getFavorites().getStringSet(FAVORITE_SET_KEY, mutableSetOf()) ?: mutableSetOf()
             val isFavorite = favorites.contains(id.toString())
-            privateRecipeState.postValue(
-                (recipeState.value ?: RecipeUIState()).copy(
-                    recipe = recipe,
-                    isFavorite = isFavorite,
+            val result = recipeRepository.getRecipeById(id)
+            when (result) {
+                is RequestResult.Success<Recipe> -> {
+                    privateRecipeState.value = RecipeUIState(
+                        recipe = result.data,
+                        isFavorite = isFavorite,
+                    )
+                }
 
-                )
-            )
-            Log.d("RecipeViewModel", "privateRecipeState.value:${privateRecipeState.value}")
+                is RequestResult.Error -> Log.d("!!", "loadRecipe $result")
+            }
         }
     }
 

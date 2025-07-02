@@ -3,12 +3,16 @@ package com.example.recipeapp.ui.recipes.favorites
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.FAVORITE_SET_KEY
 import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.model.Recipe
+import com.example.recipeapp.model.RequestResult
+import kotlinx.coroutines.launch
 
 class FavoritesViewModel(private val application: Application) : AndroidViewModel(application) {
 
@@ -28,22 +32,27 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
     }
 
     private fun privateLoadFavorites() {
-        val favoritesPrefs = getFavorites()
-        val favoritesList = favoritesPrefs.getStringSet(FAVORITE_SET_KEY, emptySet())
-            ?.mapNotNull { it.toIntOrNull() }
-            ?.toSet() ?: emptySet()
+        viewModelScope.launch {
+            val favoritesPrefs = getFavorites()
+            val favoritesList = favoritesPrefs.getStringSet(FAVORITE_SET_KEY, emptySet())
+                ?.mapNotNull { it.toIntOrNull() }
+                ?.toSet() ?: emptySet()
 
-        recipeRepository.getRecipesByCategoryIds(favoritesList) { recipeList ->
-            privateFavoriteList.postValue(
-                (favoriteList.value ?: FavoriteUIState()).copy(
-                favoriteList = recipeList
-                )
-            )
+            val result = recipeRepository.getRecipesByCategoryIds(favoritesList)
+            when (result) {
+                is RequestResult.Success<List<Recipe>> -> {
+                    privateFavoriteList.value = FavoriteUIState(
+                        favoriteList = result.data
+                    )
+                }
+
+                is RequestResult.Error -> Log.d("!!", "loadCategory $result")
+            }
         }
-
     }
 
     private fun getFavorites(): SharedPreferences {
         return application.getSharedPreferences(FAVORITE_SET_KEY, Context.MODE_PRIVATE)
     }
+
 }
