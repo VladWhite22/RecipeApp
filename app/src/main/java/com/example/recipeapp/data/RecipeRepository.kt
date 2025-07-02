@@ -10,12 +10,7 @@ class RecipeRepository {
 
     suspend fun getCategories(): RequestResult<List<Category>> = withContext(Dispatchers.IO) {
         try {
-            val response = RetrofitClient.apiService.getCategories().execute()
-            val categories = if (response.isSuccessful) {
-                response.body()?.toList() ?: emptyList()
-            } else {
-                emptyList()
-            }
+            val categories = RetrofitClient.apiService.getCategories()
             RequestResult.Success(categories)
         } catch (e: Exception) {
             RequestResult.Error(e)
@@ -26,12 +21,8 @@ class RecipeRepository {
         withContext(Dispatchers.IO) {
             try {
                 val response =
-                    RetrofitClient.apiService.getRecipesByCategoryId(categoryId).execute()
-                val result = if (response.isSuccessful) {
-                    response.body()?.toList() ?: emptyList()
-                } else {
-                    emptyList()
-                }
+                    RetrofitClient.apiService.getRecipesByCategoryId(categoryId)
+                val result = response
                 RequestResult.Success(result)
             } catch (e: Exception) {
                 RequestResult.Error(e)
@@ -40,32 +31,21 @@ class RecipeRepository {
 
     suspend fun getRecipeById(id: Int): RequestResult<Recipe> = withContext(Dispatchers.IO) {
         try {
-            val response = RetrofitClient.apiService.getRecipesById(id).execute()
-            val recipe = response.body()
-            if (recipe != null) {
-                RequestResult.Success(recipe)
-            } else {
-                RequestResult.Error(Exception("Recipe not found (null response)"))
-            }
+            val response = RetrofitClient.apiService.getRecipeById(id)
+            val recipe = response
+            RequestResult.Success(recipe)
+
         } catch (e: Exception) {
             RequestResult.Error(e)
         }
     }
 
     suspend fun getRecipesByCategoryIds(setInt: Set<Int>): RequestResult<List<Recipe>> =
-        withContext(
-            Dispatchers.IO
-        ) {
+        withContext(Dispatchers.IO) {
             try {
-                val response =
-                    RetrofitClient.apiService.getRecipesByIds(setInt.joinToString(","))
-                        .execute()
-                val list = response.body()
-                if (list != null) {
-                    RequestResult.Success(list)
-                } else {
-                    RequestResult.Error(Exception("Recipe not found (null response)"))
-                }
+                val idsString = setInt.joinToString(",")
+                val recipes = RetrofitClient.apiService.getRecipesByIds(idsString)
+                RequestResult.Success(recipes)
             } catch (e: Exception) {
                 RequestResult.Error(e)
             }
