@@ -1,5 +1,6 @@
 package com.example.recipeapp.data
 
+import android.util.Log
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
@@ -13,6 +14,7 @@ class RecipeRepository {
             val categories = RetrofitClient.apiService.getCategories()
             RequestResult.Success(categories)
         } catch (e: Exception) {
+            Log.d("!!", "getCategories")
             RequestResult.Error(e)
         }
     }
@@ -25,6 +27,7 @@ class RecipeRepository {
                 val result = response
                 RequestResult.Success(result)
             } catch (e: Exception) {
+                Log.d("!!", "getRecipesByCategoryId")
                 RequestResult.Error(e)
             }
         }
@@ -36,6 +39,7 @@ class RecipeRepository {
             RequestResult.Success(recipe)
 
         } catch (e: Exception) {
+            Log.d("!!", "getRecipesByCategoryId")
             RequestResult.Error(e)
         }
     }
@@ -47,6 +51,7 @@ class RecipeRepository {
                 val recipes = RetrofitClient.apiService.getRecipesByIds(idsString)
                 RequestResult.Success(recipes)
             } catch (e: Exception) {
+                Log.d("!!", "getRecipesByCategoryId")
                 RequestResult.Error(e)
             }
         }

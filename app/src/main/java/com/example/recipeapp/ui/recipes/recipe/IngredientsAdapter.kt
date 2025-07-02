@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aseducationalproject.Domain.Ingredient
 import com.example.recipeapp.databinding.ItemIngredientBinding
+import java.math.BigDecimal
 
 class IngredientsAdapter( var dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
@@ -25,12 +26,21 @@ class IngredientsAdapter( var dataSet: List<Ingredient>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         val ingredient: Ingredient = dataSet[position]
         holder.textView.text = ingredient.description
-        var updateQuant = ingredient.quantity.toBigDecimal().multiply(quantity.toBigDecimal())
-            .stripTrailingZeros().toPlainString()
-        holder.quantity.text = "${updateQuant} ${ingredient.unitOfMeasure}"
+
+        val quantityValue = try {
+            val cleanQuantity = ingredient.quantity.replace("[^0-9.]".toRegex(), "")
+            if (cleanQuantity.isNotEmpty()) {
+                cleanQuantity.toBigDecimal().multiply(quantity.toBigDecimal())
+            } else {
+                BigDecimal.ZERO
+            }
+        } catch (e: Exception) {
+            BigDecimal.ZERO
+        }.stripTrailingZeros()
+
+        holder.quantity.text = "${quantityValue.toPlainString()} ${ingredient.unitOfMeasure}"
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -45,7 +55,6 @@ class IngredientsAdapter( var dataSet: List<Ingredient>) :
         notifyDataSetChanged()
     }
 
-    companion object
 
 
 }
