@@ -10,10 +10,15 @@ import androidx.lifecycle.MutableLiveData
 import com.example.recipeapp.FAVORITE_SET_KEY
 import com.example.recipeapp.model.Recipe
 import androidx.core.content.edit
+import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
+import com.example.recipeapp.data.local.DB
 import com.example.recipeapp.model.RequestResult
+import com.example.recipeapp.ui.recipes.recipeList.RecipesListVIewModel.RecipeListUIState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
     data class RecipeUIState(
@@ -47,7 +52,20 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                     )
                 }
 
-                is RequestResult.Error -> Log.d("!!", "loadRecipe $result")
+                is RequestResult.Error -> {
+                    Log.d("!!", "loadRecipe $result")
+                    val recipeFromDb = withContext(Dispatchers.IO) {
+                        (application as DB).recipeDb.recipesDao().getRecipeById(id)
+                    }
+                    if (recipeFromDb != null) {
+                        privateRecipeState.value = RecipeUIState(
+                            recipe = recipeFromDb,
+                            isFavorite = isFavorite
+                        )
+                    } else {
+                        Log.d("!!", "recipeFromDb not found")
+                    }
+                }
             }
         }
     }

@@ -1,17 +1,23 @@
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import com.example.recipeapp.model.Category
+package com.example.recipeapp.data.local
 
-@Database(
-    entities = [Category::class],
-    version = 1,
-    exportSchema = false
-)
-abstract class AppDatabase : RoomDatabase() {
-    abstract fun categoryDao(): CategoryDao
+import AppDatabase
+import android.app.Application
+import androidx.room.Room
+import com.example.recipeapp.data.local.recipeList.RecipeDB
+
+class DB : Application() {
+    val categoryDB: AppDatabase by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "categories-database"
+        ).build()
+    }
+    val recipeDb: RecipeDB by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            RecipeDB::class.java,
+            "recipe-database"
+        ).build()
+    }
 }
-
-
-
-
-
