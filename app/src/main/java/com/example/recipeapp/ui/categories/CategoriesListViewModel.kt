@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
-import com.example.recipeapp.data.local.DBInit
+import com.example.recipeapp.data.local.DB
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.RequestResult
 import kotlinx.coroutines.Dispatchers
@@ -35,9 +35,8 @@ class CategoriesListViewModel(application: Application) :
             when (result) {
                 is RequestResult.Success<List<Category>> -> {
                     withContext(Dispatchers.IO) {
-                        val db = (application as DBInit).database
-                        db.categoryDao().clearAll()
-                        db.categoryDao().insertAll(result.data)
+                        val db = (application as DB).categoryDB
+                        db.categoryDao().insertCategory(result.data)
                     }
                     privateCategoryState.value = CategoriesUIState(
                         category = result.data,
@@ -47,7 +46,7 @@ class CategoriesListViewModel(application: Application) :
                 is RequestResult.Error -> {
                     Log.d("!!", "loadCategory $result")
                     val categoriesFromDb = withContext(Dispatchers.IO) {
-                        (application as DBInit).database.categoryDao().getAllCategories()
+                        (application as DB).categoryDB.categoryDao().getAllCategories()
                     }
                     privateCategoryState.value = CategoriesUIState(
                         category = categoriesFromDb,
