@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.recipeapp.data.local.DB
+import com.example.recipeapp.data.local.favorite.Favorite
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
@@ -14,6 +15,7 @@ class RecipeRepository(application: Application) : AndroidViewModel(application)
 
     private val dbCategory = (application as DB).categoryDB
     private val dbRecipe = (application as DB).recipeDb
+    private val dbFavorite = (application as DB).favoriteDb
 
     suspend fun getCategories(): RequestResult<List<Category>> = withContext(Dispatchers.IO) {
         try {
@@ -63,7 +65,16 @@ class RecipeRepository(application: Application) : AndroidViewModel(application)
                 RequestResult.Error(e)
             }
         }
+
+     suspend fun getFavorites(): List<Int> {
+        return dbFavorite.favoriteDao().getNumbers()
+    }
+
+     suspend fun saveFavorites(favoriteEntity: Favorite) {
+        dbFavorite.favoriteDao().saveNumbers(favoriteEntity)
+    }
 }
+
 
 
 

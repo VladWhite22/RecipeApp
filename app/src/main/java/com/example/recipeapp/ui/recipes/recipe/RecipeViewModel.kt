@@ -1,18 +1,16 @@
 package com.example.recipeapp.ui.recipes.recipe
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.recipeapp.FAVORITE_SET_KEY
 import com.example.recipeapp.model.Recipe
-import androidx.core.content.edit
 import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.data.local.DB
+import com.example.recipeapp.data.local.favorite.Favorite
+import com.example.recipeapp.data.local.favorite.FavoriteConverter
 import com.example.recipeapp.model.RequestResult
 import kotlinx.coroutines.launch
 
@@ -36,9 +34,8 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                 Log.d("RecipeViewModel", "id == -1, download nothing  ")
                 return@launch
             }
-            val favorites =
-                getFavorites().getStringSet(FAVORITE_SET_KEY, mutableSetOf()) ?: mutableSetOf()
-            val isFavorite = favorites.contains(id.toString())
+            val favorites = recipeRepository.getFavorites()
+            val isFavorite = favorites.contains(id)
             val result = recipeRepository.getRecipeById(id)
             when (result) {
                 is RequestResult.Success<Recipe> -> {
@@ -51,7 +48,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                 is RequestResult.Error -> {
                     Log.d("!!", "loadRecipe $result")
                     val recipeFromDb = (application as DB).recipeDb.recipesDao().getRecipeById(id)
-                       if (recipeFromDb != null) {
+                    if (recipeFromDb != null) {
                         privateRecipeState.value = RecipeUIState(
                             recipe = recipeFromDb,
                             isFavorite = isFavorite
@@ -65,10 +62,6 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     }
 
 
-    private fun getFavorites(): SharedPreferences {
-        return application.getSharedPreferences(FAVORITE_SET_KEY, Context.MODE_PRIVATE)
-    }
-
     fun updateStateOfSeekbar(newState: Int) {
         privateRecipeState.value = privateRecipeState.value?.copy(portionsCount = newState)
     }
@@ -76,25 +69,26 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     fun onFavoriteClicked() {
         val currentState = privateRecipeState.value ?: return
         val recipeId = currentState.recipe?.id ?: return
-
-        val favorites =
-            getFavorites().getStringSet(FAVORITE_SET_KEY, mutableSetOf())?.toMutableSet()
-                ?: mutableSetOf()
-        val newFavoriteState = !currentState.isFavorite
-
-        if (newFavoriteState) {
-            favorites.add(recipeId.toString())
-        } else {
-            favorites.remove(recipeId.toString())
+        viewModelScope.launch {
+            val favorites = recipeRepository.getFavorites().toMutableSet()
+            val newFavoriteState = !currentState.isFavorite
+            if (newFavoriteState) {
+                favorites.add(recipeId)
+            } else {
+                favorites.remove(recipeId)
+            }
+            saveFavorites(favorites.toList())
+            privateRecipeState.value = currentState.copy(isFavorite = newFavoriteState)
         }
-        saveFavorites(favorites)
-        privateRecipeState.value = currentState.copy(isFavorite = newFavoriteState)
     }
 
-    fun saveFavorites(favorites: MutableSet<String>) {
-        getFavorites().edit() {
-            putStringSet(FAVORITE_SET_KEY, favorites)
-            apply()
+    fun saveFavorites(favorites: List<Int>) {
+        val favoriteEntity = Favorite(
+            id = 1,
+            numbers = FavoriteConverter().fromList(favorites)
+        )
+        viewModelScope.launch {
+            recipeRepository.saveFavorites(favoriteEntity)
         }
     }
 
