@@ -20,7 +20,7 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
         val favoriteList: List<Recipe>? = listOf()
     )
 
-    private val recipeRepository = RecipeRepository()
+    private val recipeRepository = RecipeRepository(application)
 
     private val privateFavoriteList = MutableLiveData(FavoriteUIState())
     val favoriteList: LiveData<FavoriteUIState>
