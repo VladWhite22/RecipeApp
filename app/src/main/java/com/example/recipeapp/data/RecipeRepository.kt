@@ -1,17 +1,26 @@
 package com.example.recipeapp.data
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import com.example.recipeapp.data.local.DB
+import com.example.recipeapp.data.local.favorite.Favorite
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RecipeRepository {
+class RecipeRepository(application: Application) : AndroidViewModel(application) {
+
+    private val dbCategory = (application as DB).categoryDB
+    private val dbRecipe = (application as DB).recipeDb
+    private val dbFavorite = (application as DB).favoriteDb
 
     suspend fun getCategories(): RequestResult<List<Category>> = withContext(Dispatchers.IO) {
         try {
             val categories = RetrofitClient.apiService.getCategories()
+            dbCategory.categoryDao().insertCategory(categories)
             RequestResult.Success(categories)
         } catch (e: Exception) {
             Log.d("!!", "getCategories")
@@ -25,6 +34,7 @@ class RecipeRepository {
                 val response =
                     RetrofitClient.apiService.getRecipesByCategoryId(categoryId)
                 val result = response
+                dbRecipe.recipesDao().insertRecipe(response)
                 RequestResult.Success(result)
             } catch (e: Exception) {
                 Log.d("!!", "getRecipesByCategoryId")
@@ -55,7 +65,16 @@ class RecipeRepository {
                 RequestResult.Error(e)
             }
         }
+
+     suspend fun getFavorites(): List<Int> {
+        return dbFavorite.favoriteDao().getNumbers()
+    }
+
+     suspend fun saveFavorites(favoriteEntity: Favorite) {
+        dbFavorite.favoriteDao().saveNumbers(favoriteEntity)
+    }
 }
+
 
 
 
