@@ -1,21 +1,22 @@
 package com.example.recipeapp.data
 
-import android.app.Application
+import AppDatabase
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import com.example.recipeapp.data.local.DB
 import com.example.recipeapp.data.local.favorite.Favorite
+import com.example.recipeapp.data.local.favorite.FavoriteBase
+import com.example.recipeapp.data.local.recipeList.RecipeDB
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RecipeRepository(application: Application) : AndroidViewModel(application) {
+class RecipeRepository(
+    private val dbCategory: AppDatabase,
+    private val dbFavorite: FavoriteBase,
+    private val dbRecipe: RecipeDB,
+) {
 
-    private val dbCategory = (application as DB).categoryDB
-    private val dbRecipe = (application as DB).recipeDb
-    private val dbFavorite = (application as DB).favoriteDb
 
     suspend fun getCategories(): RequestResult<List<Category>> = withContext(Dispatchers.IO) {
         try {
@@ -66,13 +67,26 @@ class RecipeRepository(application: Application) : AndroidViewModel(application)
             }
         }
 
-     suspend fun getFavorites(): List<Int> {
+    suspend fun getFavorites(): List<Int> {
         return dbFavorite.favoriteDao().getNumbers()
     }
 
-     suspend fun saveFavorites(favoriteEntity: Favorite) {
+    suspend fun saveFavorites(favoriteEntity: Favorite) {
         dbFavorite.favoriteDao().saveNumbers(favoriteEntity)
     }
+
+    suspend fun getAllFromCategoryDB(): List<Category> {
+        return dbCategory.categoryDao().getAllCategories()
+    }
+
+    suspend fun recipeFromDBByRecipeId(id: Int): Recipe? {
+        return dbRecipe.recipesDao().getRecipeById(id)
+    }
+
+    suspend fun getRecipesByCategoryDivision(categoryId: Int): List<Recipe> {
+        return dbRecipe.recipesDao().getRecipesByCategoryDivision(categoryId)
+    }
+
 }
 
 

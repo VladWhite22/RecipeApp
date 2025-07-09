@@ -1,13 +1,15 @@
-package com.example.recipeapp.data.local
+package com.example.recipeapp
 
 import AppDatabase
 import android.app.Application
 import androidx.room.Room
 import com.example.recipeapp.data.local.favorite.FavoriteBase
 import com.example.recipeapp.data.local.recipeList.RecipeDB
-import kotlin.jvm.java
+import com.example.recipeapp.di.AppContainer
 
-class DB : Application() {
+class RecipesApplication() : Application() {
+    val appContainer by lazy { AppContainer(this) }
+
     val categoryDB: AppDatabase by lazy {
         Room.databaseBuilder(
             applicationContext,

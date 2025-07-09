@@ -1,23 +1,20 @@
 package com.example.recipeapp.ui.recipes.favorites
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
 import kotlinx.coroutines.launch
 
-class FavoritesViewModel(private val application: Application) : AndroidViewModel(application) {
+class FavoritesViewModel(private val application: RecipeRepository) : ViewModel() {
 
     data class FavoriteUIState(
         val favoriteList: List<Recipe>? = listOf()
     )
-
-    private val recipeRepository = RecipeRepository(application)
 
     private val privateFavoriteList = MutableLiveData(FavoriteUIState())
     val favoriteList: LiveData<FavoriteUIState>
@@ -30,8 +27,8 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
 
     private fun privateLoadFavorites() {
         viewModelScope.launch {
-            val favoritesList = recipeRepository.getFavorites().toSet()
-            val result = recipeRepository.getRecipesByCategoryIds(favoritesList)
+            val favoritesList = application.getFavorites().toSet()
+            val result = application.getRecipesByCategoryIds(favoritesList)
             when (result) {
                 is RequestResult.Success<List<Recipe>> -> {
                     privateFavoriteList.value = FavoriteUIState(

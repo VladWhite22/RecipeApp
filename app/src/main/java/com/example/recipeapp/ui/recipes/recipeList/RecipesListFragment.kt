@@ -8,14 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.recipeapp.R
+import com.example.recipeapp.RecipesApplication
 import com.example.recipeapp.databinding.FragmentRecipesListBinding
+import kotlin.jvm.java
 
 
 class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
+
+    private lateinit var viewModel: RecipesListVIewModel
     private var adapter = RecipesListAdapter(emptyList())
     private var _binding: FragmentRecipesListBinding? = null
     private val args: RecipesListFragmentArgs by navArgs()
@@ -23,7 +27,14 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
 
-    private val viewModel: RecipesListVIewModel by viewModels()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val appContainer = (requireActivity().application as RecipesApplication).appContainer
+        viewModel = ViewModelProvider(
+            this,
+            appContainer.recipesViewModelFactory
+        )[RecipesListVIewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
