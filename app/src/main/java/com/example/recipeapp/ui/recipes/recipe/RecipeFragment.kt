@@ -8,35 +8,29 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.recipeapp.IMAGE_BASE_URL
 import com.example.recipeapp.R
-import com.example.recipeapp.RecipesApplication
 import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.example.recipeapp.model.RequestResult
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
+@AndroidEntryPoint
 class RecipeFragment : Fragment(R.layout.fragment_recipe) {
 
-    private lateinit var viewModel: RecipeViewModel
+    private val viewModel: RecipeViewModel by viewModels()
     private val args: RecipeFragmentArgs by navArgs()
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        viewModel = ViewModelProvider(
-            this,
-            appContainer.recipeViewModelFactory
-        )[RecipeViewModel::class.java]
-    }
+
 
     class PortionSeekBarListener(
         private val onChangeIngredients: (Int) -> Unit

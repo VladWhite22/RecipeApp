@@ -8,9 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.RequestResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoriesListViewModel(private val application: RecipeRepository): ViewModel() {
+@HiltViewModel
+class CategoriesListViewModel @Inject constructor(private val application: RecipeRepository): ViewModel() {
 
     data class CategoriesUIState(
         val category: List<Category> = listOf()

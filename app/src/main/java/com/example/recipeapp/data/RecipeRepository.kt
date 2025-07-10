@@ -1,17 +1,18 @@
 package com.example.recipeapp.data
 
-import AppDatabase
+import com.example.recipeapp.data.local.AppDatabase
 import android.util.Log
 import com.example.recipeapp.data.local.favorite.Favorite
-import com.example.recipeapp.data.local.favorite.FavoriteBase
-import com.example.recipeapp.data.local.recipeList.RecipeDB
+import com.example.recipeapp.data.local.FavoriteBase
+import com.example.recipeapp.data.local.RecipeDB
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
+import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RecipeRepository(
+class RecipeRepository @Inject constructor(
     private val dbCategory: AppDatabase,
     private val dbFavorite: FavoriteBase,
     private val dbRecipe: RecipeDB,
@@ -86,6 +87,7 @@ class RecipeRepository(
     suspend fun getRecipesByCategoryDivision(categoryId: Int): List<Recipe> {
         return dbRecipe.recipesDao().getRecipesByCategoryDivision(categoryId)
     }
+
 
 }
 

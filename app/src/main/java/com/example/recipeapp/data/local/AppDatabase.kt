@@ -1,3 +1,5 @@
+package com.example.recipeapp.data.local
+
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.recipeapp.model.Category
