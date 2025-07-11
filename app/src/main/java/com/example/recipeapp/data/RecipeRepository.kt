@@ -3,8 +3,6 @@ package com.example.recipeapp.data
 import com.example.recipeapp.data.local.AppDatabase
 import android.util.Log
 import com.example.recipeapp.data.local.favorite.Favorite
-import com.example.recipeapp.data.local.FavoriteBase
-import com.example.recipeapp.data.local.RecipeDB
 import com.example.recipeapp.model.Category
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
@@ -13,16 +11,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class RecipeRepository @Inject constructor(
-    private val dbCategory: AppDatabase,
-    private val dbFavorite: FavoriteBase,
-    private val dbRecipe: RecipeDB,
+    private val appDB: AppDatabase,
 ) {
 
 
     suspend fun getCategories(): RequestResult<List<Category>> = withContext(Dispatchers.IO) {
         try {
             val categories = RetrofitClient.apiService.getCategories()
-            dbCategory.categoryDao().insertCategory(categories)
+            appDB.FoodCategoryDao().insertCategory(categories)
             RequestResult.Success(categories)
         } catch (e: Exception) {
             Log.d("!!", "getCategories")
@@ -36,7 +32,7 @@ class RecipeRepository @Inject constructor(
                 val response =
                     RetrofitClient.apiService.getRecipesByCategoryId(categoryId)
                 val result = response
-                dbRecipe.recipesDao().insertRecipe(response)
+                appDB.FoodCategoryDao().insertRecipe(response)
                 RequestResult.Success(result)
             } catch (e: Exception) {
                 Log.d("!!", "getRecipesByCategoryId")
@@ -69,23 +65,23 @@ class RecipeRepository @Inject constructor(
         }
 
     suspend fun getFavorites(): List<Int> {
-        return dbFavorite.favoriteDao().getNumbers()
+        return appDB.FoodCategoryDao().getNumbers()
     }
 
     suspend fun saveFavorites(favoriteEntity: Favorite) {
-        dbFavorite.favoriteDao().saveNumbers(favoriteEntity)
+        appDB.FoodCategoryDao().saveNumbers(favoriteEntity)
     }
 
     suspend fun getAllFromCategoryDB(): List<Category> {
-        return dbCategory.categoryDao().getAllCategories()
+        return appDB.FoodCategoryDao().getAllCategories()
     }
 
     suspend fun recipeFromDBByRecipeId(id: Int): Recipe? {
-        return dbRecipe.recipesDao().getRecipeById(id)
+        return appDB.FoodCategoryDao().getRecipeById(id)
     }
 
     suspend fun getRecipesByCategoryDivision(categoryId: Int): List<Recipe> {
-        return dbRecipe.recipesDao().getRecipesByCategoryDivision(categoryId)
+        return appDB.FoodCategoryDao().getRecipesByCategoryDivision(categoryId )
     }
 
 
