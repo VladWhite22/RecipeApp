@@ -1,23 +1,20 @@
 package com.example.recipeapp.ui.recipes.recipeList
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
-import com.example.recipeapp.data.local.DB
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
 import kotlinx.coroutines.launch
 
-class RecipesListVIewModel(val appContext: Application) : AndroidViewModel(appContext) {
+class RecipesListVIewModel(val appContext: RecipeRepository) : ViewModel() {
     data class RecipeListUIState(
         val recipeList: List<Recipe> = listOf(),
     )
 
-    private val recipeRepository = RecipeRepository(appContext)
 
     private val privateRecipeListState = MutableLiveData(RecipeListUIState())
     val recipeListState: LiveData<RecipeListUIState>
@@ -25,7 +22,7 @@ class RecipesListVIewModel(val appContext: Application) : AndroidViewModel(appCo
 
     fun loadRecipe(categoryId: Int) {
         viewModelScope.launch {
-            val result = recipeRepository.getRecipesByCategoryId(categoryId)
+            val result = appContext.getRecipesByCategoryId(categoryId)
 
             when (result) {
                 is RequestResult.Success<List<Recipe>> -> {
@@ -36,11 +33,8 @@ class RecipesListVIewModel(val appContext: Application) : AndroidViewModel(appCo
 
                 is RequestResult.Error -> {
                     Log.d("!!", "loadRecipe $result")
-                    val recipeFromDb =
-                        (appContext as DB).recipeDb.recipesDao()
-                            .getRecipesByCategoryDivision(categoryId)
                     privateRecipeListState.value = RecipeListUIState(
-                        recipeList = recipeFromDb
+                        recipeList = appContext.getRecipesByCategoryDivision(categoryId)
                     )
 
                 }
