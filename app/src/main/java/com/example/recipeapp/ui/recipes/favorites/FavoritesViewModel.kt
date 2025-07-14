@@ -8,9 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FavoritesViewModel(private val application: RecipeRepository) : ViewModel() {
+@HiltViewModel
+class FavoritesViewModel @Inject constructor(private val application: RecipeRepository) : ViewModel() {
 
     data class FavoriteUIState(
         val favoriteList: List<Recipe>? = listOf()

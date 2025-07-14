@@ -8,9 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.model.RequestResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipesListVIewModel(val appContext: RecipeRepository) : ViewModel() {
+@HiltViewModel
+class RecipesListVIewModel @Inject constructor(val appContext: RecipeRepository) : ViewModel() {
     data class RecipeListUIState(
         val recipeList: List<Recipe> = listOf(),
     )

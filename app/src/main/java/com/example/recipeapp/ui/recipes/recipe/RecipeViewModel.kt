@@ -10,9 +10,12 @@ import com.example.recipeapp.data.RecipeRepository
 import com.example.recipeapp.data.local.favorite.Favorite
 import com.example.recipeapp.data.local.favorite.FavoriteConverter
 import com.example.recipeapp.model.RequestResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipeViewModel(private val application: RecipeRepository) : ViewModel(){
+@HiltViewModel
+class RecipeViewModel @Inject constructor(private val application: RecipeRepository) : ViewModel(){
     data class RecipeUIState(
         val recipe: Recipe? = null,
         val isFavorite: Boolean = false,

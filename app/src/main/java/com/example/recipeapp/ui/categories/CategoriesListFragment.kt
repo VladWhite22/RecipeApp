@@ -5,31 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipeapp.R
-import com.example.recipeapp.RecipesApplication
 import com.example.recipeapp.categoresList.CategoriesListAdapter
 import com.example.recipeapp.databinding.FragmentListCategoriesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
 
-    private lateinit var viewModel: CategoriesListViewModel
+    private  val viewModel: CategoriesListViewModel  by viewModels()
     private var adapter = CategoriesListAdapter(emptyList())
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        viewModel = ViewModelProvider(
-            this,
-            appContainer.categoryViewModelFactory
-        )[CategoriesListViewModel::class.java]
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

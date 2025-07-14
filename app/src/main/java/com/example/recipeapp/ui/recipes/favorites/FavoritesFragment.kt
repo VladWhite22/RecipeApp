@@ -5,19 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipeapp.R
-import com.example.recipeapp.RecipesApplication
 import com.example.recipeapp.model.Recipe
 import com.example.recipeapp.databinding.FragmentFavoritesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
 
-    private lateinit var viewModel: FavoritesViewModel
+    private  val viewModel: FavoritesViewModel  by viewModels()
     val adapter = FavoriteListAdapter(emptyList<Recipe>())
     private var recipeList: List<Recipe> = emptyList()
     private var _binding: FragmentFavoritesBinding? = null
@@ -25,14 +26,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        viewModel = ViewModelProvider(
-            this,
-            appContainer.favoritesViewModelFactory
-        )[FavoritesViewModel::class.java]
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

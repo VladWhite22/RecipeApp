@@ -8,33 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.recipeapp.R
-import com.example.recipeapp.RecipesApplication
 import com.example.recipeapp.databinding.FragmentRecipesListBinding
-import kotlin.jvm.java
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
 
-    private lateinit var viewModel: RecipesListVIewModel
+    private val viewModel: RecipesListVIewModel by viewModels()
     private var adapter = RecipesListAdapter(emptyList())
     private var _binding: FragmentRecipesListBinding? = null
     private val args: RecipesListFragmentArgs by navArgs()
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must be not null")
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        viewModel = ViewModelProvider(
-            this,
-            appContainer.recipesViewModelFactory
-        )[RecipesListVIewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,7 +62,7 @@ class RecipesListFragment : Fragment(R.layout.fragment_recipes_list) {
                         val drawable = Drawable.createFromStream(inputStream, null)
                         binding.ivFragmentRecipeList.setImageDrawable(drawable)
                         inputStream.close()
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         Log.e("!!", "Failed to load image from assets: $imageUrl")
 
                     }
