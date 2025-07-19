@@ -68,4 +68,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    testImplementation("org.junit.jupiter:junit-jupiter:5.13.1")
+    testImplementation("io.mockk:mockk:1.14.2")
+    testImplementation(kotlin("test"))
 }
